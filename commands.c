@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 06:56:06 by amarouf           #+#    #+#             */
-/*   Updated: 2024/05/27 06:56:32 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/05/27 21:18:10 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,16 @@ void	ft_echo_command(char **split)
 		printf("%s%%",split[2]);
 	else
 		printf("%s\n",split[1]);
+}
+
+void	ft_env_command(t_list *env)
+{
+	t_list *tmp;
+
+	tmp = env;
+	while (tmp)
+	{
+		printf("%s\n", tmp->data);
+		tmp = tmp->next;
+	}
 }
