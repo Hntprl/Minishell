@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 20:47:51 by amarouf           #+#    #+#             */
-/*   Updated: 2024/05/27 20:55:12 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/05/28 01:10:29 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,45 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 	else
 		last -> next = new;
 	new -> next = NULL;
+}
+
+void	ft_lstdelone(t_list *lst, void (*del)(void *))
+{
+	if (!lst || !del)
+		return ;
+	del(lst -> data);
+}
+
+void	ft_lstclear_size(t_list **lst, void (*del)(void *), int size)
+{
+	t_list	*p;
+
+	if (!lst || !del)
+		return ;
+	while (size)
+	{
+		p = (*lst)-> next;
+		del(*lst);
+		(*lst) = p;
+		size --;
+	}
+}
+
+void	ft_lstclear(t_list **lst, void (*del)(void *))
+{
+	t_list	*p;
+
+	if (!lst || !del)
+		return ;
+	while ((*lst) != NULL)
+	{
+		p = (*lst)-> next;
+		ft_lstdelone(*lst, del);
+		(*lst) = p;
+	}
+}
+
+void del(void *lst)
+{
+	free(lst);
 }

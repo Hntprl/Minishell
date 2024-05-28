@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 06:56:06 by amarouf           #+#    #+#             */
-/*   Updated: 2024/05/27 21:18:10 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/05/28 00:38:23 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,24 @@ void	ft_echo_command(char **split)
 
 void	ft_env_command(t_list *env)
 {
-	t_list *tmp;
-
-	tmp = env;
-	while (tmp)
+	while (env)
 	{
-		printf("%s\n", tmp->data);
-		tmp = tmp->next;
+		printf("%s\n", env->data);
+		env = env->next;
+	}
+}
+
+void	ft_export_command(char **split, t_list *env)
+{
+	ft_lstadd_back(&env, ft_lstnew(split[1]));
+}
+
+void	ft_unset_command(char **split, t_list *env)
+{
+	while (env)
+	{
+		if (!ft_memcmp(env->data, split[1], ft_strlen(split[1])))
+			ft_lstclear_size(&env, del, 1);
+		env = env->next;
 	}
 }

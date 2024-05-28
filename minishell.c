@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/05/27 21:20:00 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/05/28 01:09:18 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,10 @@ void	ft_command_check(char **split, t_list *env)
 		ft_echo_command(split);
 	else if (!ft_memcmp(split[0], "env", 4))
 		ft_env_command(env);
+	else if (!ft_memcmp(split[0], "unset", 6))
+		ft_unset_command(split, env);
+	else if (!ft_memcmp(split[0], "export", 7))
+		ft_export_command(split, env);
 }
 
 char	**ft_line_split(char *line)
@@ -96,7 +100,6 @@ void minishell(t_list *env)
 		free(rd_hestory);
 		rd_hestory = readline("Minishell>");
 	}
-	
 	exit(0);
 }
 
