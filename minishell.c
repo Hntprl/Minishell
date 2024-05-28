@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/05/28 01:09:18 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/05/28 06:29:32 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ void	ft_command_check(char **split, t_list *env)
 		ft_unset_command(split, env);
 	else if (!ft_memcmp(split[0], "export", 7))
 		ft_export_command(split, env);
+	else if (!ft_memcmp(split[0], "exit", 5))
+		exit(0);
 }
 
 char	**ft_line_split(char *line)

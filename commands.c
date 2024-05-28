@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 06:56:06 by amarouf           #+#    #+#             */
-/*   Updated: 2024/05/28 00:38:23 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/05/28 06:26:02 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ void	ft_unset_command(char **split, t_list *env)
 {
 	while (env)
 	{
-		if (!ft_memcmp(env->data, split[1], ft_strlen(split[1])))
-			ft_lstclear_size(&env, del, 1);
+			if (!ft_memcmp(env->next->data, split[1], ft_strlen(split[1])))
+				ft_lstclear_size(&env, del, 1);
 		env = env->next;
 	}
 }

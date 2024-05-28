@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 20:47:51 by amarouf           #+#    #+#             */
-/*   Updated: 2024/05/28 01:10:29 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/05/28 06:27:05 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,15 +59,19 @@ void	ft_lstdelone(t_list *lst, void (*del)(void *))
 
 void	ft_lstclear_size(t_list **lst, void (*del)(void *), int size)
 {
-	t_list	*p;
+	t_list	*dlt;
 
 	if (!lst || !del)
 		return ;
+	dlt = NULL;
 	while (size)
 	{
-		p = (*lst)-> next;
-		del(*lst);
-		(*lst) = p;
+		dlt = (*lst)->next;
+		if (dlt->next)
+			(*lst)->next = dlt->next;
+		else
+			(*lst)->next = NULL;
+		del(dlt);
 		size --;
 	}
 }
