@@ -6,17 +6,16 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:08:51 by amarouf           #+#    #+#             */
-/*   Updated: 2024/05/30 08:43:38 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/05/30 10:46:33 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	commandcheck(char **envp, char *cmd2, char **cmd1)
+void	commandcheck(char **envp, char *cmd2)
 {
 	if (ft_checkaccess(envp, cmd2) == NULL)
 	{
-		(free_strings(cmd1), free(cmd2));
 		exit(write(2, "command not found!\n", 19));
 	}
 }
@@ -29,7 +28,10 @@ char	*ft_findpath(char **envp)
 	while (envp[i] != NULL)
 	{
 		if (ft_strnstr(envp[i], "PATH", 4) != NULL)
+		{
 			return ((envp[i] + 5));
+		}
+			
 		i ++;
 	}
 	return (NULL);

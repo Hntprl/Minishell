@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/05/30 10:03:06 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/05/30 10:52:42 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,11 @@ void	shell_commands(char **split, t_list *env)
 	pid = fork();
 	if (pid == -1)
 		(write(1, "Error:Fork!", 11), exit(1));
+		
 	if (pid == 0)
 	{
-		execve(ft_strjoin(ft_checkaccess(envp, split[0]), cmd), split, envp);
+		commandcheck(envp, cmd);
+		execve(ft_strjoin(ft_checkaccess(envp, ft_strjoin("/", split[0])), cmd), split, envp);
 	}
 }
 
