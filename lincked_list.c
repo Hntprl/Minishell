@@ -6,16 +6,25 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 20:47:51 by amarouf           #+#    #+#             */
-/*   Updated: 2024/05/28 06:27:05 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/05/30 09:00:19 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_list	*ft_lstnew(void *content)
+t_list	*ft_lstnew(char *content)
 {
+	int i;
 	t_list	*node;
+	char	*var;
 
+	i = 0;
+	var = malloc(ft_strlen(content));
+	while (content[i])
+	{
+		var[i] = content[i];
+		i++;
+	}	
 	node = (t_list *)malloc(sizeof(t_list));
 	if (node == NULL)
 		return (NULL);
@@ -74,6 +83,21 @@ void	ft_lstclear_size(t_list **lst, void (*del)(void *), int size)
 		del(dlt);
 		size --;
 	}
+}
+
+int	ft_lstsize(t_list *lst)
+{
+	int	i;
+
+	i = 0;
+	if (!lst)
+		return (0);
+	while (lst != NULL)
+	{
+		lst = lst -> next;
+		i ++;
+	}
+	return (i);
 }
 
 void	ft_lstclear(t_list **lst, void (*del)(void *))

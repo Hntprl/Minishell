@@ -6,63 +6,41 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/05/28 06:29:32 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/05/30 10:03:06 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_findpath(char **envp)
+
+
+void	shell_commands(char **split, t_list *env)
 {
-	int	i;
-
-	i = 0;
-	while (envp[i] != NULL)
-	{
-		if (ft_strnstr(envp[i], "PATH", 4) != NULL)
-			return ((envp[i] + 5));
-		i ++;
-	}
-	return (NULL);
-}
-
-char	*ft_checkaccess(char **env, char *cmd)
-{
-	int		i;
-	char	**allpaths;
-	char	*path;
-
-	i = 0;
-	allpaths = ft_split(ft_findpath(env), ':');
-	if (allpaths == NULL)
-		exit(EXIT_FAILURE);
-	while (allpaths[i] != NULL)
-	{
-		path = ft_strjoin(allpaths[i], cmd);
-		if (access(path, F_OK) == 0)
-		{
-			path = ft_strdup(allpaths[i]);
-			return (free_strings(allpaths), path);
-		}
-		free(path);
-		i ++;
-	}
-	free_strings(allpaths);
-	return (NULL);
-}
-
-t_list	*fill_envp(char **env)
-{
+	char *cmd;
+	int pid;
 	int i;
-	t_list *lst = NULL;
-	
-	i = -1;
-	while (env[++i])
-		ft_lstadd_back(&lst, ft_lstnew(env[i]));
-	return (lst);
+	char **envp;
+
+	i = 0;
+	cmd = ft_strjoin("/" , split[0]);
+	envp = malloc(sizeof(char *) * (ft_lstsize(env) + 1));
+	while (env)
+	{
+		envp[i] = env->data;
+		i ++;
+		env = env->next;
+	}
+	envp[i] = NULL;
+	pid = fork();
+	if (pid == -1)
+		(write(1, "Error:Fork!", 11), exit(1));
+	if (pid == 0)
+	{
+		execve(ft_strjoin(ft_checkaccess(envp, split[0]), cmd), split, envp);
+	}
 }
 
-void	ft_command_check(char **split, t_list *env)
+void	ft_command_check(char **split, t_list *ls_env)
 {
 	if (!ft_memcmp(split[0], "pwd", 4))
 		ft_pwd_command(split);
@@ -71,13 +49,15 @@ void	ft_command_check(char **split, t_list *env)
 	else if (!ft_memcmp(split[0], "echo", 5))
 		ft_echo_command(split);
 	else if (!ft_memcmp(split[0], "env", 4))
-		ft_env_command(env);
+		ft_env_command(ls_env);
 	else if (!ft_memcmp(split[0], "unset", 6))
-		ft_unset_command(split, env);
+		ft_unset_command(split, ls_env);
 	else if (!ft_memcmp(split[0], "export", 7))
-		ft_export_command(split, env);
+		ft_export_command(split, ls_env);
 	else if (!ft_memcmp(split[0], "exit", 5))
 		exit(0);
+	else
+		shell_commands(split, ls_env);
 }
 
 char	**ft_line_split(char *line)
@@ -88,7 +68,7 @@ char	**ft_line_split(char *line)
 	return (split);
 }
 
-void minishell(t_list *env)
+void minishell(t_list *ls_env)
 {
 	char *rd_hestory;
 	char **split;
@@ -98,7 +78,7 @@ void minishell(t_list *env)
 	{
 		split = ft_line_split(rd_hestory);	
 		add_history(rd_hestory);
-		ft_command_check(split, env);
+		ft_command_check(split, ls_env);
 		free(rd_hestory);
 		rd_hestory = readline("Minishell>");
 	}
