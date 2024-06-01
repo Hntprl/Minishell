@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 00:28:55 by amarouf           #+#    #+#             */
-/*   Updated: 2024/05/27 04:57:17 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/06/01 02:45:40 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	ft_memcmp(const void *s1, const void *s2, size_t n)
 
 	c1 = (unsigned char *)s1;
 	c2 = (unsigned char *)s2;
-
 	while (n > 0)
 	{
 		if (*c1 != *c2)

@@ -6,23 +6,22 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/05/30 10:52:42 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/06/01 02:48:44 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-
 void	shell_commands(char **split, t_list *env)
 {
-	char *cmd;
-	int pid;
-	int i;
-	char **envp;
+	char	*path;
+	char	*cmd;
+	int		pid;
+	int		i;
+	char	**envp;
 
 	i = 0;
-	cmd = ft_strjoin("/" , split[0]);
+	cmd = ft_strjoin("/", split[0]);
 	envp = malloc(sizeof(char *) * (ft_lstsize(env) + 1));
 	while (env)
 	{
@@ -34,18 +33,16 @@ void	shell_commands(char **split, t_list *env)
 	pid = fork();
 	if (pid == -1)
 		(write(1, "Error:Fork!", 11), exit(1));
-		
+	path = ft_checkaccess(envp, ft_strjoin("/", split[0]));
 	if (pid == 0)
-	{
-		commandcheck(envp, cmd);
-		execve(ft_strjoin(ft_checkaccess(envp, ft_strjoin("/", split[0])), cmd), split, envp);
-	}
+		(commandcheck(envp, cmd), execve(ft_strjoin(path, cmd), split, envp));
+	(free(path), wait(&pid));
 }
 
 void	ft_command_check(char **split, t_list *ls_env)
 {
 	if (!ft_memcmp(split[0], "pwd", 4))
-		ft_pwd_command(split);
+		ft_pwd_command();
 	else if (!ft_memcmp(split[0], "cd", 3))
 		ft_cd_command(split);
 	else if (!ft_memcmp(split[0], "echo", 5))
@@ -64,34 +61,35 @@ void	ft_command_check(char **split, t_list *ls_env)
 
 char	**ft_line_split(char *line)
 {
-	char **split;
+	char	**split;
 
 	split = ft_split(line, ' ');
 	return (split);
 }
 
-void minishell(t_list *ls_env)
+void	minishell(t_list *ls_env)
 {
-	char *rd_hestory;
-	char **split;
+	char	*rd_hestory;
+	char	**split;
 
 	rd_hestory = readline("Minishell>");
 	while (rd_hestory)
 	{
-		split = ft_line_split(rd_hestory);	
+		split = ft_line_split(rd_hestory);
 		add_history(rd_hestory);
 		ft_command_check(split, ls_env);
+		free_strings(split);
 		free(rd_hestory);
 		rd_hestory = readline("Minishell>");
 	}
+	rl_clear_history();
+	ft_lstclear(&ls_env, del);
 	exit(0);
 }
 
-int main(int ac, char **av, char **env)
+int	main(int ac, char **av, char **env)
 {
 	(void)av;
 	if (ac == 1)
-	{
 		minishell(fill_envp(env));
-	}	
 }

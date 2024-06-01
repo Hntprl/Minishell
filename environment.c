@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:08:51 by amarouf           #+#    #+#             */
-/*   Updated: 2024/05/30 10:46:33 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/06/01 02:47:27 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,7 @@ char	*ft_findpath(char **envp)
 	while (envp[i] != NULL)
 	{
 		if (ft_strnstr(envp[i], "PATH", 4) != NULL)
-		{
 			return ((envp[i] + 5));
-		}
-			
 		i ++;
 	}
 	return (NULL);
@@ -64,9 +61,10 @@ char	*ft_checkaccess(char **env, char *cmd)
 
 t_list	*fill_envp(char **env)
 {
-	int i;
-	t_list *lst = NULL;
-	
+	int		i;
+	t_list	*lst;
+
+	lst = NULL;
 	i = -1;
 	while (env[++i])
 		ft_lstadd_back(&lst, ft_lstnew(env[i]));

@@ -1,33 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   commands.c                                         :+:      :+:    :+:   */
+/*   env_commands.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/27 06:56:06 by amarouf           #+#    #+#             */
-/*   Updated: 2024/06/01 02:49:00 by amarouf          ###   ########.fr       */
+/*   Created: 2024/06/01 02:41:11 by amarouf           #+#    #+#             */
+/*   Updated: 2024/06/01 02:41:55 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_pwd_command()
+void	ft_env_command(t_list *env)
 {
-	char	buf[225];
-
-	printf("%s\n", getcwd(buf, 225));
+	while (env)
+	{
+		printf("%s\n", env->data);
+		env = env->next;
+	}
 }
 
-void	ft_cd_command(char **split)
+void	ft_export_command(char **split, t_list *env)
 {
-	chdir(split[1]);
+	ft_lstadd_back(&env, ft_lstnew(split[1]));
 }
 
-void	ft_echo_command(char **split)
+void	ft_unset_command(char **split, t_list *env)
 {
-	if (!ft_memcmp(split[1], "-n", 3))
-		printf("%s%%", split[2]);
-	else
-		printf("%s\n", split[1]);
+	while (env)
+	{
+		if (!ft_memcmp(env->next->data, split[1], ft_strlen(split[1])))
+			ft_lstclear_size(&env, del, 1);
+		env = env->next;
+	}
 }
