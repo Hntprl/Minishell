@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:10:07 by amarouf           #+#    #+#             */
-/*   Updated: 2024/06/26 12:05:51 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/06/26 14:00:48 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,5 @@ t_list	*fill_envp(char **env);
 void	shell_commands(char **split, t_list *env);
 char	**ft_line_split(char *line);
 void	minishell(t_list *ls_env);
-void	pipex(int argc, char **argv, char **envp);
+// void	pipex(int argc, char **argv, char **envp);
 #endif
