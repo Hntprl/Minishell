@@ -1,33 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   commands.c                                         :+:      :+:    :+:   */
+/*   pipex_utils_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/27 06:56:06 by amarouf           #+#    #+#             */
-/*   Updated: 2024/06/03 04:56:04 by amarouf          ###   ########.fr       */
+/*   Created: 2024/02/16 00:16:54 by amarouf           #+#    #+#             */
+/*   Updated: 2024/06/25 17:31:34 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "pipex_bonus.h"
 
-void	ft_pwd_command(void)
+void	ft_free(char **str)
 {
-	char	buf[225];
+	int	i;
 
-	printf("%s\n", getcwd(buf, 225));
-}
-
-void	ft_cd_command(char **split)
-{
-	chdir(split[1]);
-}
-
-void	ft_echo_command(char **split)
-{
-	if (!ft_memcmp(split[1], "-n", 3))
-		printf("%s%%", split[2]);
-	else
-		printf("%s\n", split[1]);
+	i = 0;
+	while (str[i])
+		free(str[i ++]);
+	free(str);
 }

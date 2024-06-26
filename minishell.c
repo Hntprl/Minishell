@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/06/01 02:48:44 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/06/26 12:11:54 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	shell_commands(char **split, t_list *env)
 	(free(path), wait(&pid));
 }
 
-void	ft_command_check(char **split, t_list *ls_env)
+void	ft_command_check(char **split, t_list **ls_env)
 {
 	if (!ft_memcmp(split[0], "pwd", 4))
 		ft_pwd_command();
@@ -48,15 +48,15 @@ void	ft_command_check(char **split, t_list *ls_env)
 	else if (!ft_memcmp(split[0], "echo", 5))
 		ft_echo_command(split);
 	else if (!ft_memcmp(split[0], "env", 4))
-		ft_env_command(ls_env);
+		ft_env_command(*ls_env);
 	else if (!ft_memcmp(split[0], "unset", 6))
 		ft_unset_command(split, ls_env);
 	else if (!ft_memcmp(split[0], "export", 7))
-		ft_export_command(split, ls_env);
+		ft_export_command(split, *ls_env);
 	else if (!ft_memcmp(split[0], "exit", 5))
-		exit(0);
+		(write(1, "exit!\n", 6), exit(0));
 	else
-		shell_commands(split, ls_env);
+		shell_commands(split, *ls_env);
 }
 
 char	**ft_line_split(char *line)
@@ -71,19 +71,24 @@ void	minishell(t_list *ls_env)
 {
 	char	*rd_hestory;
 	char	**split;
+	char	*prompt;
 
-	rd_hestory = readline("Minishell>");
+	prompt = BOLD RED "Mini" YELLOW "shell" RED ">" RESET;
+	rd_hestory = readline(prompt);
 	while (rd_hestory)
 	{
 		split = ft_line_split(rd_hestory);
-		add_history(rd_hestory);
-		ft_command_check(split, ls_env);
-		free_strings(split);
-		free(rd_hestory);
-		rd_hestory = readline("Minishell>");
+		if (split[0] != NULL)
+		{
+			add_history(rd_hestory);
+			ft_command_check(split, &ls_env);
+			free_strings(split);
+			free(rd_hestory);
+		}
+		rd_hestory = readline(prompt);
 	}
 	rl_clear_history();
-	ft_lstclear(&ls_env, del);
+	ft_lstclear(&ls_env);
 	exit(0);
 }
 

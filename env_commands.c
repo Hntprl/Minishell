@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 02:41:11 by amarouf           #+#    #+#             */
-/*   Updated: 2024/06/01 02:41:55 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/06/25 14:44:16 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,36 @@ void	ft_export_command(char **split, t_list *env)
 	ft_lstadd_back(&env, ft_lstnew(split[1]));
 }
 
-void	ft_unset_command(char **split, t_list *env)
+void	ft_unset_command(char **split, t_list **env)
 {
-	while (env)
+	t_list	*prev;
+	char	**name;
+	t_list	*dlt;
+	t_list	*current;
+	int		var_len;
+
+	current = (*env);
+	dlt = NULL;
+	prev = NULL;
+	while (current)
 	{
-		if (!ft_memcmp(env->next->data, split[1], ft_strlen(split[1])))
-			ft_lstclear_size(&env, del, 1);
-		env = env->next;
+		name = ft_split(current->data, '=');
+		var_len = ft_strlen(name[0]);
+		free_strings(name);
+		if (!ft_memcmp(split[1], current->data, var_len))
+		{
+			dlt = current;
+			if (prev)
+				prev ->next = current->next;
+			else
+				(*env) = current->next;
+			current = current->next;
+			ft_lstdelone(dlt);
+		}
+		else
+		{
+			prev = current;
+			current = current->next;
+		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 20:47:51 by amarouf           #+#    #+#             */
-/*   Updated: 2024/06/01 02:44:57 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/06/01 22:43:17 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,7 @@ t_list	*ft_lstnew(char *content)
 	char	*var;
 
 	i = 0;
-	var = malloc(ft_strlen(content) + 1);
-	while (content[i])
-	{
-		var[i] = content[i];
-		i++;
-	}
-	var[i] = '\0';
+	var = ft_strdup(content);
 	node = (t_list *)malloc(sizeof(t_list));
 	if (node == NULL)
 		return (NULL);
