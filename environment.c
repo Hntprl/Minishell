@@ -6,12 +6,13 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:08:51 by amarouf           #+#    #+#             */
-/*   Updated: 2024/06/01 02:47:27 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/06/27 19:15:16 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// katchecki lcommands (ejhfjehf NO , ls cd .. YES) .
 void	commandcheck(char **envp, char *cmd2)
 {
 	if (ft_checkaccess(envp, cmd2) == NULL)
@@ -20,6 +21,7 @@ void	commandcheck(char **envp, char *cmd2)
 	}
 }
 
+// Kat9leb 3la l PATH variable fl Envp .
 char	*ft_findpath(char **envp)
 {
 	int	i;
@@ -34,6 +36,7 @@ char	*ft_findpath(char **envp)
 	return (NULL);
 }
 
+// Katreturni l path dyal l command (...../bin/ls) .
 char	*ft_checkaccess(char **env, char *cmd)
 {
 	int		i;
@@ -59,6 +62,7 @@ char	*ft_checkaccess(char **env, char *cmd)
 	return (NULL);
 }
 
+// kat7t l Envp f lincked list .
 t_list	*fill_envp(char **env)
 {
 	int		i;

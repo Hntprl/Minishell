@@ -6,12 +6,14 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 02:41:11 by amarouf           #+#    #+#             */
-/*   Updated: 2024/06/25 14:44:16 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/06/27 19:15:53 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+
+// env command .
 void	ft_env_command(t_list *env)
 {
 	while (env)
@@ -21,11 +23,14 @@ void	ft_env_command(t_list *env)
 	}
 }
 
+// export command .
 void	ft_export_command(char **split, t_list *env)
 {
 	ft_lstadd_back(&env, ft_lstnew(split[1]));
 }
 
+
+//unset command .
 void	ft_unset_command(char **split, t_list **env)
 {
 	t_list	*prev;

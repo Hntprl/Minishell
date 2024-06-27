@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:10:07 by amarouf           #+#    #+#             */
-/*   Updated: 2024/06/26 14:00:48 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/06/27 18:08:20 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	free_strings(char **strings);
 char	*ft_substr(const char *s, unsigned int start, size_t len);
 // Lincked-list
 t_list	*ft_lstnew(char	*ontent);
+char **ft_list_to_str(t_list *env);
 void	ft_lstadd_back(t_list **lst, t_list *new);
 void	ft_lstclear(t_list **lst);
 void	ft_lstdelone(t_list *lst);
@@ -73,5 +74,5 @@ t_list	*fill_envp(char **env);
 void	shell_commands(char **split, t_list *env);
 char	**ft_line_split(char *line);
 void	minishell(t_list *ls_env);
-// void	pipex(int argc, char **argv, char **envp);
+void	pipex(int argc, char **argv, char **envp);
 #endif

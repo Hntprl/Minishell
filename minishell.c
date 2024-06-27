@@ -6,22 +6,19 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/06/26 16:47:27 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/06/27 19:11:57 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	shell_commands(char **split, t_list *env)
+// Array to lincked list .
+char **ft_list_to_str(t_list *env)
 {
-	char	*path;
-	char	*cmd;
-	int		pid;
-	int		i;
-	char	**envp;
+	int i;
+	char **envp;
 
 	i = 0;
-	cmd = ft_strjoin("/", split[0]);
 	envp = malloc(sizeof(char *) * (ft_lstsize(env) + 1));
 	while (env)
 	{
@@ -30,6 +27,19 @@ void	shell_commands(char **split, t_list *env)
 		env = env->next;
 	}
 	envp[i] = NULL;
+	return (envp);
+}
+
+// Execute shell commands .
+void	shell_commands(char **split, t_list *env)
+{
+	char	*path;
+	char	*cmd;
+	int		pid;
+	char	**envp;
+	
+	envp = ft_list_to_str(env);
+	cmd = ft_strjoin("/", split[0]);
 	pid = fork();
 	if (pid == -1)
 		(write(1, "Error:Fork!", 11), exit(1));
@@ -39,6 +49,7 @@ void	shell_commands(char **split, t_list *env)
 	(free(path), wait(&pid));
 }
 
+// Commands :) .
 void	ft_command_check(char **split, t_list **ls_env)
 {
 	if (!ft_memcmp(split[0], "pwd", 4))
@@ -55,10 +66,13 @@ void	ft_command_check(char **split, t_list **ls_env)
 		ft_export_command(split, *ls_env);
 	else if (!ft_memcmp(split[0], "exit", 5))
 		(write(1, "exit!\n", 6), exit(0));
+	if (!ft_memcmp(split[1], "|", 1))
+		pipex(3, split, ft_list_to_str(*ls_env));
 	else
 		shell_commands(split, *ls_env);
 }
 
+// Split the input .
 char	**ft_line_split(char *line)
 {
 	char	**split;
@@ -67,6 +81,7 @@ char	**ft_line_split(char *line)
 	return (split);
 }
 
+// Read from 0 and stuff ...
 void	minishell(t_list *ls_env)
 {
 	char	*rd_hestory;
@@ -87,6 +102,7 @@ void	minishell(t_list *ls_env)
 		}
 		rd_hestory = readline(prompt);
 	}
+	write(1, "exit\n", 5);
 	rl_clear_history();
 	ft_lstclear(&ls_env);
 	exit(0);
