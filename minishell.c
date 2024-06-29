@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/06/27 19:11:57 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/06/29 19:01:11 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char **ft_list_to_str(t_list *env)
 	return (envp);
 }
 
-// Execute shell commands .
+// Execute shell commands (ls , grep ....) .
 void	shell_commands(char **split, t_list *env)
 {
 	char	*path;
@@ -66,7 +66,7 @@ void	ft_command_check(char **split, t_list **ls_env)
 		ft_export_command(split, *ls_env);
 	else if (!ft_memcmp(split[0], "exit", 5))
 		(write(1, "exit!\n", 6), exit(0));
-	if (!ft_memcmp(split[1], "|", 1))
+	else if (!ft_memcmp(split[1], "|", 1))
 		pipex(3, split, ft_list_to_str(*ls_env));
 	else
 		shell_commands(split, *ls_env);
@@ -81,7 +81,7 @@ char	**ft_line_split(char *line)
 	return (split);
 }
 
-// Read from 0 and stuff ...
+// Read from 0 ...
 void	minishell(t_list *ls_env)
 {
 	char	*rd_hestory;
