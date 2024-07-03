@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:10:07 by amarouf           #+#    #+#             */
-/*   Updated: 2024/06/27 18:08:20 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/02 21:15:06 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ size_t	ft_strlen(const char *s);
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
 void	free_strings(char **strings);
 char	*ft_substr(const char *s, unsigned int start, size_t len);
+char	*ft_strrchr(const char *s, int c);
 // Lincked-list
 t_list	*ft_lstnew(char	*ontent);
 char **ft_list_to_str(t_list *env);
@@ -61,7 +62,7 @@ void	del(void *lst);
 void	ft_command_check(char **split, t_list **ls_env);
 void	ft_pwd_command(void);
 void	ft_cd_command(char **split);
-void	ft_echo_command(char **split);
+void	ft_echo_command(char **split, char **env);
 void	ft_env_command(t_list *env);
 void	ft_export_command(char **split, t_list *env);
 void	ft_unset_command(char **split, t_list **env);

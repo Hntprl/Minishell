@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/06/29 19:01:11 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/02 21:14:51 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	ft_command_check(char **split, t_list **ls_env)
 	else if (!ft_memcmp(split[0], "cd", 3))
 		ft_cd_command(split);
 	else if (!ft_memcmp(split[0], "echo", 5))
-		ft_echo_command(split);
+		ft_echo_command(split, ft_list_to_str(*ls_env));
 	else if (!ft_memcmp(split[0], "env", 4))
 		ft_env_command(*ls_env);
 	else if (!ft_memcmp(split[0], "unset", 6))
