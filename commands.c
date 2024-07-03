@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 06:56:06 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/03 18:56:40 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/03 19:20:09 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,21 @@ void	ft_echo_command(char **split, char **env)
 		printf("%s%%", split[2]);
 	else if ((var_name = ft_strrchr(split[1], '$')))
 		{
-			var_name = *ft_split(var_name, '$');
-			while (*env ++)
+			if (!ft_memcmp(var_name, "$", 2))
+				printf("$\n");
+			else
 			{
-				if (!ft_memcmp(var_name, *env, ft_strlen(var_name)))
+				var_name = *ft_split(var_name, '$');
+				while (*env ++)
 				{
-					var_value = ft_strrchr(*env, '=');
-					printf("%s\n", ++ var_value);
+					if (!ft_memcmp(var_name, *env, ft_strlen(var_name)))
+					{
+						var_value = ft_strrchr(*env, '=');
+						printf("%s\n", ++ var_value);
+					}
 				}
 			}
+			
 		}
 	else
 		printf("%s\n", split[1]);
