@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 06:56:06 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/06 16:07:06 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/06 22:57:35 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	ft_echo_command(char **split, char **env)
 						printf("%s", var_name);
 					else
 						printf("%s", var_value);
-					i += name_end;
+					i = name_end;
 				}
 			}
 		}
