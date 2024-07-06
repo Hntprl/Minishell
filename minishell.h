@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:10:07 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/02 21:15:06 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/06 23:01:44 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_list
 }	t_list;
 
 // Libft
+int		ft_atoi(char *str);
 int		ft_memcmp(const void *s1, const void *s2, size_t n);
 char	**ft_split(char const *s, char c);
 char	*ft_strdup(const char *s1);

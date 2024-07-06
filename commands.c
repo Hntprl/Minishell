@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 06:56:06 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/06 22:57:35 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/06 23:09:44 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char *ft_find_env_value(char *var_name, char **env)
 
 	i = 0;
 	if (var_name[0] != '$')
-		return NULL;
+		return (NULL);
 	var_name = (var_name + 1);
 	while (env[i])
 	{
@@ -43,9 +43,34 @@ char *ft_find_env_value(char *var_name, char **env)
 			return ((ft_strrchr(env[i], '=') + 1));
 		i ++;
 	}
-	return (NULL);
+	return ("1");
 }
 
+int ft_getpid(void)
+{
+	int fd;
+	char buffer[256];
+	ssize_t bytes_read;
+	int pid;
+
+	fd = open("/proc/self/stat", O_RDONLY);
+	if (fd == -1)
+		exit(1);
+	bytes_read = read(fd, buffer, sizeof(buffer) - 1);
+	if (bytes_read == -1)
+	{
+		close(fd);
+		exit(1);
+	}
+	buffer[bytes_read] = '\0';
+	close(fd);
+	char *ptr = buffer;
+	while (*ptr != ' ' && *ptr != '\0')
+	{
+		ptr++;
+	}
+	return (pid = ft_atoi(buffer));
+}
 
 void	ft_echo_command(char **split, char **env)
 {
@@ -68,7 +93,7 @@ void	ft_echo_command(char **split, char **env)
 			{
 				while (split[1][i] == '$' && split[1][i + 1] == '$')
 				{
-					printf("%d", getpid());
+					printf("%d", ft_getpid());
 					i += 2;
 				}
 				if (split[1][i] == '$' && split[1][i + 1] == '\0')

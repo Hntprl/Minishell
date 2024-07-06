@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 00:28:55 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/02 21:13:49 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/06 23:01:28 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,4 +157,32 @@ char	*ft_strrchr(const char *s, int c)
 		i --;
 	}
 	return (0);
+}
+
+
+ int ft_atoi(char *str)
+{
+	int i;
+	int sign;
+	int res;
+
+	i = 0;
+	sign = 1;
+	res = 0;
+	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n' || str[i] == '\v'
+		|| str[i] == '\f' || str[i] == '\r')
+		i++;
+	if (str[i] == '-')
+	{
+		sign = -1;
+		i++;
+	}
+	else if (str[i] == '+')
+		i++;
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		res = res * 10 + str[i] - '0';
+		i++;
+	}
+	return (res * sign);
 }
