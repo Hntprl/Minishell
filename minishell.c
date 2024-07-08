@@ -6,7 +6,7 @@
 /*   By: ochemsi <ochemsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/08 13:45:18 by ochemsi          ###   ########.fr       */
+/*   Updated: 2024/07/08 13:50:40 by ochemsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,108 +108,6 @@ void minishell(t_list *ls_env)
 	exit(0);
 }
 ////////////////////////////////////////////////////////////////////////////////////////
-// int count_cmds(t_lexer **head)
-// {
-// 	int count;
-// 	count = 0;
-// 	while (head)
-// 	{
-// 		if (head->token == PIPE)
-// 			break;
-// 		if (head->token == WORD && head->prev && head->prev->token != REDIRECTION_APPEND && head->prev->token != REDIRECTION_IN && head->prev->token != REDIRECTION_OUT && head->prev->token != HEREDOC)
-// 			count++;
-// 		head = head->next;
-// 	}
-// 	return (count);
-// }
-// ls -l > file.txt < file2.txt | grep -i "hello" > file.txt
-// void parser(t_lexer *head)
-// {
-// 	t_parser *parser;
-// 	int i;
-// 	int j;
-// 	int count;
-// 	t_lexer *tmp;
-// 	tmp = head;
-// 	i = 0;
-// 	j = 0;
-// 	// count = pipe number;
-// 	while (tmp)
-// 	{
-// 		if (tmp->token == PIPE)
-// 			j++;
-// 		tmp = tmp->next;
-// 	}
-// 	// malloc parser
-// 	parser = malloc(sizeof(t_parser) * j);
-// 	tmp = head;
-// 	// count commands and allocate memory the pip is split the commands
-// 	while(head)
-// 	{
-// 		count = count_cmds(head);
-// 		parser->command = malloc(sizeof(char *) * (count + 1));
-// 		parser->next = malloc(sizeof(t_parser));
-// 		parser = parser->next;
-// 		head = head->next;
-
-// 	}
-// 	head = tmp;
-// 	while (head)
-// 	{
-
-// 		while (head && head->token != PIPE)
-// 		{
-// 			if(head->prev && head->prev->token != REDIRECTION_APPEND
-// 				&& head->prev->token != REDIRECTION_IN
-// 				&& head->prev->token != REDIRECTION_OUT
-// 				&& head->prev->token != HEREDOC
-// 				&& head->prev->token != PIPE)
-// 				{
-// 					parser->command[i] = ft_strdup(head->str);
-// 					i++;
-// 				}
-// 				head = head->next;
-// 		}
-// 		head = head->next;
-// 	}
-// 	head = tmp;
-// 		while (head)
-// 		{
-// 			if ((head->prev && head->prev->token != PIPE )
-// 			|| head->prev->token == REDIRECTION_APPEND
-// 			|| head->prev->token == REDIRECTION_IN
-// 			|| head->prev->token == REDIRECTION_OUT
-// 			|| head->prev->token == HEREDOC)
-// 			{
-// 				parser->red = malloc(sizeof(t_file_red));
-// 				parser->red->typeofFile = head->token;
-// 				parser->red->filename = ft_strdup(head->next->str);
-// 				parser->red->next = NULL;
-// 				parser = parser->next;
-// 			}
-// 			head = head->next;
-// 		}
-// 	head = tmp;
-// 	// print parser
-// 	while (parser)
-// 	{
-// 		i = 0;
-// 		while (parser->command[i])
-// 		{
-// 			printf("command[%d] = %s\n", i, parser->command[i]);
-// 			i++;
-// 		}
-// 		while (parser->red)
-// 		{
-// 			printf("redirection = %d\n", parser->red->typeofFile);
-// 			printf("filename = %s\n", parser->red->filename);
-// 			parser->red = parser->red->next;
-// 		}
-// 		parser = parser->next;
-// 	}
-// }
-#include <stdlib.h>
-#include <string.h>
 
 // main function
 int main(int ac, char **av)
