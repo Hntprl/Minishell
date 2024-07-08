@@ -18,7 +18,7 @@ size_t	ft_strlen(const char *s)
 
 	i = 0;
 	while (s[i] != '\0')
-		i ++;
+		i++;
 	return (i);
 }
 
@@ -37,9 +37,9 @@ int	ft_memcmp(const void *s1, const void *s2, size_t n)
 	{
 		if (*c1 != *c2)
 			return (*c1 - *c2);
-		n --;
-		c1 ++;
-		c2 ++;
+		n--;
+		c1++;
+		c2++;
 	}
 	return (0);
 }
@@ -50,13 +50,13 @@ char	*ft_strdup(const char *s1)
 	char	*p;
 
 	i = 0;
-	p = (char *) malloc(sizeof(char) * ft_strlen(s1) + 1);
+	p = (char *)malloc(sizeof(char) * ft_strlen(s1) + 1);
 	if (p == NULL)
 		return (NULL);
 	while (s1[i] != '\0')
 	{
 		p[i] = s1[i];
-		i ++;
+		i++;
 	}
 	p[i] = '\0';
 	return (p);
@@ -78,12 +78,12 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	while (s1[i] != '\0')
 	{
 		p[i] = s1[i];
-		i ++;
+		i++;
 	}
 	while (s2[j] != '\0')
 	{
 		p[i + j] = s2[j];
-		j ++;
+		j++;
 	}
 	p[i + j] = '\0';
 	return (p);
@@ -106,11 +106,11 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 			{
 				if (needle[j + 1] == '\0')
 					return ((char *)haystack + i);
-				j ++;
+				j++;
 			}
 			j = 0;
 		}
-		i ++;
+		i++;
 	}
 	return (NULL);
 }
@@ -154,16 +154,16 @@ char	*ft_strrchr(const char *s, int c)
 		{
 			return ((char *)s + i);
 		}
-		i --;
+		i--;
 	}
 	return (0);
 }
 
- int ft_atoi(char *str)
+int	ft_atoi(char *str)
 {
-	int i;
-	int sign;
-	int res;
+	int	i;
+	int	sign;
+	int	res;
 
 	i = 0;
 	sign = 1;
@@ -185,4 +185,3 @@ char	*ft_strrchr(const char *s, int c)
 	}
 	return (res * sign);
 }
-

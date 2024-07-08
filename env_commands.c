@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-
 // env command .
 void	ft_env_command(t_list *env)
 {
@@ -29,8 +28,7 @@ void	ft_export_command(char **split, t_list *env)
 	ft_lstadd_back(&env, ft_lstnew(split[1]));
 }
 
-
-//unset command .
+// unset command .
 void	ft_unset_command(char **split, t_list **env)
 {
 	t_list	*prev;
@@ -51,7 +49,7 @@ void	ft_unset_command(char **split, t_list **env)
 		{
 			dlt = current;
 			if (prev)
-				prev ->next = current->next;
+				prev->next = current->next;
 			else
 				(*env) = current->next;
 			current = current->next;

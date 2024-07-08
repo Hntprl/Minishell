@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-
 // pwd command .
 void	ft_pwd_command(void)
 {
@@ -30,29 +29,28 @@ void	ft_cd_command(char **split)
 // echo command .
 void	ft_echo_command(char **split, char **env)
 {
-	char *var_name;
-	char *var_value;
+	char	*var_name;
+	char	*var_value;
 
 	if (!ft_memcmp(split[1], "-n", 3))
 		printf("%s%%", split[2]);
 	else if ((var_name = ft_strrchr(split[1], '$')))
+	{
+		if (!ft_memcmp(var_name, "$", 2))
+			printf("$\n");
+		else
 		{
-			if (!ft_memcmp(var_name, "$", 2))
-				printf("$\n");
-			else
+			var_name = *ft_split(var_name, '$');
+			while (*env++)
 			{
-				var_name = *ft_split(var_name, '$');
-				while (*env ++)
+				if (!ft_memcmp(var_name, *env, ft_strlen(var_name)))
 				{
-					if (!ft_memcmp(var_name, *env, ft_strlen(var_name)))
-					{
-						var_value = ft_strrchr(*env, '=');
-						printf("%s\n", ++ var_value);
-					}
+					var_value = ft_strrchr(*env, '=');
+					printf("%s\n", ++var_value);
 				}
 			}
-			
 		}
+	}
 	else
 		printf("%s\n", split[1]);
 }

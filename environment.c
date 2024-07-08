@@ -31,7 +31,7 @@ char	*ft_findpath(char **envp)
 	{
 		if (ft_strnstr(envp[i], "PATH", 4) != NULL)
 			return ((envp[i] + 5));
-		i ++;
+		i++;
 	}
 	return (NULL);
 }
@@ -56,7 +56,7 @@ char	*ft_checkaccess(char **env, char *cmd)
 			return (free_strings(allpaths), path);
 		}
 		free(path);
-		i ++;
+		i++;
 	}
 	free_strings(allpaths);
 	return (NULL);
