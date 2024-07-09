@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochemsi <ochemsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/08 14:22:10 by ochemsi          ###   ########.fr       */
+/*   Updated: 2024/07/09 01:15:58 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,26 +50,26 @@ void shell_commands(char **split, t_list *env)
 }
 
 // Commands :) .
-void ft_command_check(char **split, t_list **ls_env)
+void ft_command_check(t_parser *parser, t_list **ls_env)
 {
-	if (!ft_memcmp(split[0], "pwd", 4))
+	t_parser *prs = parser;
+
+	if (!ft_memcmp(prs->command[0], "pwd", 4))
 		ft_pwd_command();
-	else if (!ft_memcmp(split[0], "cd", 3))
-		ft_cd_command(split);
-	else if (!ft_memcmp(split[0], "echo", 5))
-		ft_echo_command(split, ft_list_to_str(*ls_env));
-	else if (!ft_memcmp(split[0], "env", 4))
+	else if (!ft_memcmp(prs->command[0], "cd", 3))
+		ft_cd_command(prs->command, ft_list_to_str(*ls_env));
+	else if (!ft_memcmp(prs->command[0], "echo", 5))
+		ft_echo_command(prs->command, ft_list_to_str(*ls_env));
+	else if (!ft_memcmp(prs->command[0], "env", 4))
 		ft_env_command(*ls_env);
-	else if (!ft_memcmp(split[0], "unset", 6))
-		ft_unset_command(split, ls_env);
-	else if (!ft_memcmp(split[0], "export", 7))
-		ft_export_command(split, *ls_env);
-	else if (!ft_memcmp(split[0], "exit", 5))
+	else if (!ft_memcmp(prs->command[0], "unset", 6))
+		ft_unset_command(prs->command, ls_env);
+	else if (!ft_memcmp(prs->command[0], "export", 7))
+		ft_export_command(prs->command, *ls_env);
+	else if (!ft_memcmp(prs->command[0], "exit", 5))
 		(write(1, "exit!\n", 6), exit(0));
-	else if (!ft_memcmp(split[1], "|", 1))
-		pipex(3, split, ft_list_to_str(*ls_env));
 	else
-		shell_commands(split, *ls_env);
+		shell_commands(prs->command, *ls_env);
 }
 
 // Split the input .
@@ -84,46 +84,45 @@ char **ft_line_split(char *line)
 // Read from 0 ...
 void minishell(t_list *ls_env)
 {
-	char *rd_hestory;
-	char **split;
+	t_lexer *lexer;
+	t_parser *parser;
+	char *rd_history;
 	char *prompt;
 
+	lexer = NULL;
+	parser = NULL;
 	prompt = BOLD RED "Mini" YELLOW "shell" RED ">" RESET;
-	rd_hestory = readline(prompt);
-	while (rd_hestory)
+	rd_history = readline(prompt);
+	while (rd_history)
 	{
-		split = ft_line_split(rd_hestory);
-		if (split[0] != NULL)
+		if (rd_history[0])
 		{
-			add_history(rd_hestory);
-			ft_command_check(split, &ls_env);
-			free_strings(split);
-			free(rd_hestory);
+			add_history(rd_history);
+			tokenize_input(&lexer, rd_history);
+			// print_tokens(lexer);
+			fill_parser(lexer, &parser);
+			// print_parcer(parser);
+			ft_command_check(parser, &ls_env);
+			lexer = NULL;
+			parser = NULL;
 		}
-		rd_hestory = readline(prompt);
+		rd_history = readline(prompt);
 	}
 	write(1, "exit\n", 5);
 	rl_clear_history();
 	ft_lstclear(&ls_env);
 	exit(0);
 }
+
 ////////////////////////////////////////////////////////////////////////////////////////
 
 // main function
-int main(int ac, char **av)
+int main(int ac, char **av, char **env)
 {
 	(void)av;
-	t_lexer *lexer;
-	t_parser *parser;
-	lexer = NULL;
-	parser = NULL;
 	if (ac == 1)
 	{
-		tokenize_input(&lexer);
-		print_tokens(lexer);
-		printf("parser\n");
-		fill_parser(lexer, &parser);
-		print_parcer(parser);
+		minishell(fill_envp(env));
 	}
 	exit(0);
 }

@@ -6,8 +6,9 @@ CC = cc
 
 SRC = commands.c environment.c lincked_list.c env_commands.c \
 	libft_funcs.c lincked_list_clear.c minishell.c split.c \
+	commands/cd_command.c commands/echo_command.c \
 	pipex/pipex_bonus.c \
-	pipex/here_doc.c pipex/get_next_line.c pipex/commandcheck.c parser.c helper.c lexer.c\
+	pipex/here_doc.c pipex/get_next_line.c parser.c lexer.c helper.c pipex/commandcheck.c \
 
 OSRC = $(SRC:.c=.o)
 

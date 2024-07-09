@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochemsi <ochemsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 13:44:22 by ochemsi           #+#    #+#             */
-/*   Updated: 2024/07/08 14:24:51 by ochemsi          ###   ########.fr       */
+/*   Updated: 2024/07/09 01:08:48 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ void print_parcer(t_parser *parser)
         red = parser->red;
         while (red)
         {
-            char *str;
+            char *str = NULL;
             if (red->typeofFile == WORD)
                 str = "WORD";
             else if (red->typeofFile == PIPE)

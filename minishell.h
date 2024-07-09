@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochemsi <ochemsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:10:07 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/08 13:45:57 by ochemsi          ###   ########.fr       */
+/*   Updated: 2024/07/09 01:08:30 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,52 +35,9 @@
 # define BG "\033[40m"
 # define BLACK "\033[30m"
 
-typedef struct s_list
-{
-	struct s_list		*next;
-	char				*data;
-}						t_list;
+//////////////////////////////////////////////////////////////////////
 
-// Libft
-int						ft_memcmp(const void *s1, const void *s2, size_t n);
-char					**ft_split(char const *s, char c);
-char					*ft_strdup(const char *s1);
-char					*ft_strjoin(char const *s1, char const *s2);
-size_t					ft_strlen(const char *s);
-char					*ft_strnstr(const char *haystack, const char *needle,
-							size_t len);
-void					free_strings(char **strings);
-char					*ft_substr(const char *s, unsigned int start,
-							size_t len);
-char					*ft_strrchr(const char *s, int c);
-// Lincked-list
-t_list					*ft_lstnew(char *ontent);
-char					**ft_list_to_str(t_list *env);
-void					ft_lstadd_back(t_list **lst, t_list *new);
-void					ft_lstclear(t_list **lst);
-void					ft_lstdelone(t_list *lst);
-int						ft_lstsize(t_list *lst);
-t_list					*ft_lstlast(t_list *lst);
-void					del(void *lst);
-// Commands
-void					ft_command_check(char **split, t_list **ls_env);
-void					ft_pwd_command(void);
-void					ft_cd_command(char **split);
-void					ft_echo_command(char **split, char **env);
-void					ft_env_command(t_list *env);
-void					ft_export_command(char **split, t_list *env);
-void					ft_unset_command(char **split, t_list **env);
-// Environment
-void					commandcheck(char **envp, char *cmd2);
-char					*ft_findpath(char **env);
-char					*ft_checkaccess(char **env, char *cmd);
-t_list					*fill_envp(char **env);
-// Shell-build
-void					shell_commands(char **split, t_list *env);
-char					**ft_line_split(char *line);
-void					minishell(t_list *ls_env);
-void					pipex(int argc, char **argv, char **envp);
-/////////////////////////////
+// Structs
 typedef enum e_tokens
 {
 	WORD,
@@ -115,6 +72,58 @@ typedef struct s_parser
 	struct s_parser		*next;
 }						t_parser;
 
+typedef struct s_list
+{
+	struct s_list		*next;
+	char				*data;
+}						t_list;
+
+////////////////////////////////////////////////////////////////////
+
+// Function calls
+
+// Libft
+int						ft_memcmp(const void *s1, const void *s2, size_t n);
+char					**ft_split(char const *s, char c);
+char					*ft_strdup(const char *s1);
+char					*ft_strjoin(char const *s1, char const *s2);
+size_t					ft_strlen(const char *s);
+char					*ft_strnstr(const char *haystack, const char *needle,
+							size_t len);
+void					free_strings(char **strings);
+char					*ft_substr(const char *s, unsigned int start,
+							size_t len);
+char					*ft_strrchr(const char *s, int c);
+// Lincked-list
+t_list					*ft_lstnew(char *ontent);
+char					**ft_list_to_str(t_list *env);
+void					ft_lstadd_back(t_list **lst, t_list *new);
+void					ft_lstclear(t_list **lst);
+void					ft_lstdelone(t_list *lst);
+int						ft_lstsize(t_list *lst);
+t_list					*ft_lstlast(t_list *lst);
+void					del(void *lst);
+// Commands
+void					ft_command_check(t_parser *parser, t_list **ls_env);
+void					ft_pwd_command(void);
+void					ft_cd_command(char **command, char **env);
+void					ft_echo_command(char **command, char **env);
+void					ft_env_command(t_list *env);
+void					ft_export_command(char **split, t_list *env);
+void					ft_unset_command(char **split, t_list **env);
+// Environment
+void					commandcheck(char **envp, char *cmd2);
+char					*ft_findpath(char **env);
+char					*ft_checkaccess(char **env, char *cmd);
+t_list					*fill_envp(char **env);
+char					*ft_find_env_value(char *var_name, char **env);
+// Shell-build
+void					shell_commands(char **split, t_list *env);
+char					**ft_line_split(char *line);
+void					minishell(t_list *ls_env);
+void					pipex(int argc, char **argv, char **envp);
+/////////////////////////////
+
 ////////////////////////////
 
 // here_doc.c
@@ -125,12 +134,13 @@ int						ft_atoi(char *str);
 // lexer.c
 void					add_token_to_collection(t_lexer **head,t_lexer *new_token);
 t_lexer					*create_lexer_token(char *str, t_tokens token);
-void					tokenize_input(t_lexer **head);
+void					 tokenize_input(t_lexer **head, char *rd_history);
 void					print_tokens(t_lexer *head);
 // helper.c
 void					check_qoutes(char *str);
 int						ft_getpid(void);
 // parser.c
+// void fill_parser(t_lexer *lexer, t_parser **parser)
 void					fill_parser(t_lexer *lexer, t_parser **parser);
 void					add_command(t_parser **parser, char *cmd, int command_count);
 void					add_file_red(t_parser **parser, t_tokens type, char *filename);

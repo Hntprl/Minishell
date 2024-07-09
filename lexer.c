@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochemsi <ochemsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 10:50:57 by ochemsi           #+#    #+#             */
-/*   Updated: 2024/07/08 10:53:18 by ochemsi          ###   ########.fr       */
+/*   Updated: 2024/07/08 23:05:53 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,40 +48,35 @@ void add_token_to_collection(t_lexer **head, t_lexer *new_token)
 	current->next = new_token;
 	new_token->prev = current;
 }
-void tokenize_input(t_lexer **head)
+void tokenize_input(t_lexer **head, char *rd_history)
 {
-	char *rd_hestory;
-	char *prompt;
 	int i = 0;
 	int j;
 	char *word;
 
-	prompt = BOLD RED "Minishell>" RESET;
-	rd_hestory = readline(prompt);
-
-	while (rd_hestory && rd_hestory[i])
+	while (rd_history && rd_history[i])
 	{
-		if (rd_hestory[i] == '|')
+		if (rd_history[i] == '|')
 		{
 			add_token_to_collection(head, create_lexer_token("|", PIPE));
 			i++;
 		}
-		else if (ft_strncmp(&rd_hestory[i], ">>", 2) == 0)
+		else if (ft_strncmp(&rd_history[i], ">>", 2) == 0)
 		{
 			add_token_to_collection(head, create_lexer_token(">>", REDIRECTION_APPEND));
 			i += 2;
 		}
-		else if (rd_hestory[i] == '<' && rd_hestory[i + 1] != '<')
+		else if (rd_history[i] == '<' && rd_history[i + 1] != '<')
 		{
 			add_token_to_collection(head, create_lexer_token("<", REDIRECTION_IN));
 			i++;
 		}
-		else if (rd_hestory[i] == '>' && rd_hestory[i + 1] != '>')
+		else if (rd_history[i] == '>' && rd_history[i + 1] != '>')
 		{
 			add_token_to_collection(head, create_lexer_token(">", REDIRECTION_OUT));
 			i++;
 		}
-		else if (ft_strncmp(&rd_hestory[i], "<<", 2) == 0)
+		else if (ft_strncmp(&rd_history[i], "<<", 2) == 0)
 		{
 			add_token_to_collection(head, create_lexer_token("<<", HEREDOC));
 			i += 2;
@@ -89,11 +84,11 @@ void tokenize_input(t_lexer **head)
 		else
 		{
 			j = i;
-			while (rd_hestory[j] != '\0' && rd_hestory[j] != ' ' && rd_hestory[j] != '\t' && rd_hestory[j] != '|' && ft_strncmp(&rd_hestory[j], ">>", 2) != 0 && rd_hestory[j] != '<' && rd_hestory[j] != '>' && ft_strncmp(&rd_hestory[j], "<<", 2) != 0)
+			while (rd_history[j] != '\0' && rd_history[j] != ' ' && rd_history[j] != '\t' && rd_history[j] != '|' && ft_strncmp(&rd_history[j], ">>", 2) != 0 && rd_history[j] != '<' && rd_history[j] != '>' && ft_strncmp(&rd_history[j], "<<", 2) != 0)
 				j++;
 			if (j > i)
 			{
-				word = ft_substr(&rd_hestory[i], 0, j - i);
+				word = ft_substr(&rd_history[i], 0, j - i);
 				add_token_to_collection(head, create_lexer_token(word, WORD));
 				free(word);
 				i = j;
@@ -101,7 +96,7 @@ void tokenize_input(t_lexer **head)
 			i++;
 		}
 	}
-	free(rd_hestory);
+	free(rd_history);
 }
 
 void print_tokens(t_lexer *head)

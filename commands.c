@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 06:56:06 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/03 19:20:09 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/09 01:08:35 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,37 +20,19 @@ void	ft_pwd_command(void)
 	printf("%s\n", getcwd(buf, 225));
 }
 
-// cd command .
-void	ft_cd_command(char **split)
+char *ft_find_env_value(char *var_name, char **env)
 {
-	chdir(split[1]);
-}
+	int i;
 
-// echo command .
-void	ft_echo_command(char **split, char **env)
-{
-	char	*var_name;
-	char	*var_value;
-
-	if (!ft_memcmp(split[1], "-n", 3))
-		printf("%s%%", split[2]);
-	else if ((var_name = ft_strrchr(split[1], '$')))
+	i = 0;
+	if (var_name[0] != '$')
+		return (NULL);
+	var_name = (var_name + 1);
+	while (env[i])
 	{
-		if (!ft_memcmp(var_name, "$", 2))
-			printf("$\n");
-		else
-		{
-			var_name = *ft_split(var_name, '$');
-			while (*env++)
-			{
-				if (!ft_memcmp(var_name, *env, ft_strlen(var_name)))
-				{
-					var_value = ft_strrchr(*env, '=');
-					printf("%s\n", ++var_value);
-				}
-			}
-		}
+		if (!ft_memcmp((var_name), env[i], ft_strlen(var_name)))
+			return ((ft_strrchr(env[i], '=') + 1));
+		i ++;
 	}
-	else
-		printf("%s\n", split[1]);
+	return ("1");
 }
