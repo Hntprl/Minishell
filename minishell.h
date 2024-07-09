@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:10:07 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/09 01:08:30 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/09 03:14:33 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include <stdbool.h>
 // add path to pipex_bonus.h////////////////////////////
 # include "pipex/pipex_bonus.h"
 // Prompt
@@ -148,5 +149,9 @@ void					print_parcer(t_parser *parser);
 int						count_commands(t_lexer *head);
 t_parser				*create_parser_node(void);
 t_file_red				*create_file_red_node(t_tokens type, char *filename);
+
+//free
+void	free_parser(t_parser **parser);
+void	free_lexer(t_lexer **lexer);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/09 01:15:58 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/09 03:18:14 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,28 @@ void shell_commands(char **split, t_list *env)
 	(free(path), wait(&pid));
 }
 
+int ft_redirection(t_parser *parser)
+{
+	int fd = 1;
+
+	if (parser->red->typeofFile == 4)
+	{
+		fd = open(parser->red->filename, O_CREAT | O_RDWR, 0644);
+		dup2(fd, 1);
+		// printf("%d\n", fd);
+		// close(fd);
+	}
+	return (fd);
+}
+
 // Commands :) .
 void ft_command_check(t_parser *parser, t_list **ls_env)
 {
+	int fd = 1;
 	t_parser *prs = parser;
 
+	if (prs->red)
+		fd = ft_redirection(prs);
 	if (!ft_memcmp(prs->command[0], "pwd", 4))
 		ft_pwd_command();
 	else if (!ft_memcmp(prs->command[0], "cd", 3))
@@ -70,6 +87,7 @@ void ft_command_check(t_parser *parser, t_list **ls_env)
 		(write(1, "exit!\n", 6), exit(0));
 	else
 		shell_commands(prs->command, *ls_env);
+	dup2(1, fd);
 }
 
 // Split the input .
@@ -81,6 +99,51 @@ char **ft_line_split(char *line)
 	return (split);
 }
 
+// Read from 0 ...
+int check_quotes(const char *str)
+{
+	bool in_double_quote = false;
+	bool in_single_quote = false;
+	int i = 0;
+
+	while (str[i])
+	{
+		if (str[i] == '"' && !in_single_quote)
+		{
+			in_double_quote = !in_double_quote;
+		}
+		else if (str[i] == '\'' && !in_double_quote)
+		{
+			in_single_quote = !in_single_quote;
+		}
+		i++;
+	}
+
+	if (in_double_quote || in_single_quote)
+	{
+		return 0;
+	}
+	return 1;
+}
+
+int check_words(t_lexer *lexer)
+{
+	t_lexer *current;
+
+	current = lexer;
+	while (current)
+	{
+		if (current->token == WORD)
+		{
+			if (check_quotes(current->str) == 0)
+			{
+				return (0);
+			}
+		}
+		current = current->next;
+	}
+	return (1);
+}
 // Read from 0 ...
 void minishell(t_list *ls_env)
 {
@@ -100,11 +163,20 @@ void minishell(t_list *ls_env)
 			add_history(rd_history);
 			tokenize_input(&lexer, rd_history);
 			// print_tokens(lexer);
+			//
+			if (check_words(lexer) == 0)
+			{
+				write(1, "Syntax error: unclosed quote\n", 30);
+				free_lexer(&lexer);
+				rd_history = readline(prompt);
+
+				continue;
+			}
 			fill_parser(lexer, &parser);
 			// print_parcer(parser);
-			ft_command_check(parser, &ls_env);
-			lexer = NULL;
-			parser = NULL;
+			 ft_command_check(parser, &ls_env);
+			free_lexer(&lexer);
+			free_parser(&parser);
 		}
 		rd_history = readline(prompt);
 	}

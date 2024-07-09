@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 00:57:49 by amarouf           #+#    #+#             */
-/*   Updated: 2024/06/26 16:47:22 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/09 01:30:13 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,3 +108,8 @@ void	pipex(int argc, char **argv, char **envp)
 	while (wait(NULL) == -1)
 		;
 }
+
+// int main (int ac, char **av, char **envp)
+// {
+// 	pipex(ac, av, envp);
+// }
