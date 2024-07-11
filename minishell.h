@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:10:07 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/09 03:14:33 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/09 19:17:25 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,6 @@ t_list					*fill_envp(char **env);
 char					*ft_find_env_value(char *var_name, char **env);
 // Shell-build
 void					shell_commands(char **split, t_list *env);
-char					**ft_line_split(char *line);
 void					minishell(t_list *ls_env);
 void					pipex(int argc, char **argv, char **envp);
 /////////////////////////////

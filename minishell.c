@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/09 03:18:14 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/11 22:17:47 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,54 +49,67 @@ void shell_commands(char **split, t_list *env)
 	(free(path), wait(&pid));
 }
 
-int ft_redirection(t_parser *parser)
+int ft_redirection(t_file_red *red, int fd)
 {
-	int fd = 1;
+	int std_in = 1;
+	int std_out = 1;
 
-	if (parser->red->typeofFile == 4)
+	if (red->typeofFile == 4 || red->typeofFile == 2)
 	{
-		fd = open(parser->red->filename, O_CREAT | O_RDWR, 0644);
+		std_in = dup(1);
 		dup2(fd, 1);
-		// printf("%d\n", fd);
-		// close(fd);
+		close(fd);
+		return(std_in);
 	}
-	return (fd);
+	else if (red->typeofFile == 3)
+	{
+		std_out = dup(0);
+		dup2(fd, 0);
+		close(fd);
+		return(std_out);
+	}
+	return (-1337);
 }
 
 // Commands :) .
 void ft_command_check(t_parser *parser, t_list **ls_env)
 {
 	int fd = 1;
-	t_parser *prs = parser;
-
-	if (prs->red)
-		fd = ft_redirection(prs);
-	if (!ft_memcmp(prs->command[0], "pwd", 4))
-		ft_pwd_command();
-	else if (!ft_memcmp(prs->command[0], "cd", 3))
-		ft_cd_command(prs->command, ft_list_to_str(*ls_env));
-	else if (!ft_memcmp(prs->command[0], "echo", 5))
-		ft_echo_command(prs->command, ft_list_to_str(*ls_env));
-	else if (!ft_memcmp(prs->command[0], "env", 4))
-		ft_env_command(*ls_env);
-	else if (!ft_memcmp(prs->command[0], "unset", 6))
-		ft_unset_command(prs->command, ls_env);
-	else if (!ft_memcmp(prs->command[0], "export", 7))
-		ft_export_command(prs->command, *ls_env);
-	else if (!ft_memcmp(prs->command[0], "exit", 5))
-		(write(1, "exit!\n", 6), exit(0));
-	else
-		shell_commands(prs->command, *ls_env);
-	dup2(1, fd);
-}
-
-// Split the input .
-char **ft_line_split(char *line)
-{
-	char **split;
-
-	split = ft_split(line, ' ');
-	return (split);
+	int std_in = -999;
+	while (parser->red)
+	{
+		while (parser->red->next && parser->red->typeofFile == parser->red->next->typeofFile)
+			{
+				fd = open(parser->red->filename, O_CREAT | O_RDWR, 0644);
+				close(fd);
+				parser->red = parser->red->next;
+			}
+		if (parser->red->typeofFile == 3)
+			fd = open(parser->red->filename, O_CREAT | O_RDWR, 0644);
+		else
+			fd = open(parser->red->filename, O_CREAT | O_TRUNC | O_RDWR, 0644);
+		std_in = ft_redirection(parser->red, fd);
+		parser->red = parser->red->next;
+	}
+		if (!ft_memcmp(parser->command[0], "pwd", 4))
+			ft_pwd_command();
+		else if (!ft_memcmp(parser->command[0], "cd", 3))
+			ft_cd_command(parser->command, ft_list_to_str(*ls_env));
+		else if (!ft_memcmp(parser->command[0], "echo", 5))
+			ft_echo_command(parser->command, ft_list_to_str(*ls_env));
+		else if (!ft_memcmp(parser->command[0], "env", 4))
+			ft_env_command(*ls_env);
+		else if (!ft_memcmp(parser->command[0], "unset", 6))
+			ft_unset_command(parser->command, ls_env);
+		else if (!ft_memcmp(parser->command[0], "export", 7))
+			ft_export_command(parser->command, *ls_env);
+		else if (!ft_memcmp(parser->command[0], "exit", 5))
+			(write(1, "exit!\n", 6), exit(0));
+		else
+			shell_commands(parser->command, *ls_env);
+		dup2(std_in, 1);
+		dup2(std_in, 0);
+		close(std_in);
 }
 
 // Read from 0 ...
@@ -109,20 +122,13 @@ int check_quotes(const char *str)
 	while (str[i])
 	{
 		if (str[i] == '"' && !in_single_quote)
-		{
 			in_double_quote = !in_double_quote;
-		}
 		else if (str[i] == '\'' && !in_double_quote)
-		{
 			in_single_quote = !in_single_quote;
-		}
 		i++;
 	}
-
 	if (in_double_quote || in_single_quote)
-	{
 		return 0;
-	}
 	return 1;
 }
 
@@ -162,18 +168,14 @@ void minishell(t_list *ls_env)
 		{
 			add_history(rd_history);
 			tokenize_input(&lexer, rd_history);
-			// print_tokens(lexer);
-			//
 			if (check_words(lexer) == 0)
 			{
 				write(1, "Syntax error: unclosed quote\n", 30);
 				free_lexer(&lexer);
 				rd_history = readline(prompt);
-
 				continue;
 			}
 			fill_parser(lexer, &parser);
-			// print_parcer(parser);
 			 ft_command_check(parser, &ls_env);
 			free_lexer(&lexer);
 			free_parser(&parser);

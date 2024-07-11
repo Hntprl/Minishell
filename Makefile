@@ -1,6 +1,6 @@
 
 NAME = minishell
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=address 
+CFLAGS = -Wall -Wextra -Werror 
 RM = rm -rf
 CC = cc
 
@@ -15,7 +15,7 @@ OSRC = $(SRC:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OSRC)
-		$(CC) $(CFLAGS) $(OSRC) -lreadline -o $(NAME) 
+		$(CC) $(CFLAGS) $(OSRC) -lreadline -o $(NAME) -fsanitize=address 
 
 clean:
 	$(RM) $(OSRC)
