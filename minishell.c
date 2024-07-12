@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/11 22:17:47 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/12 22:48:05 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void shell_commands(char **split, t_list *env)
 int ft_redirection(t_file_red *red, int fd)
 {
 	int std_in = 1;
-	int std_out = 1;
+	int std_out = 0;
 
 	if (red->typeofFile == 4 || red->typeofFile == 2)
 	{
@@ -76,7 +76,7 @@ void ft_command_check(t_parser *parser, t_list **ls_env)
 {
 	int fd = 1;
 	int std_in = -999;
-	while (parser->red)
+	if (parser->red)
 	{
 		while (parser->red->next && parser->red->typeofFile == parser->red->next->typeofFile)
 			{
@@ -84,14 +84,23 @@ void ft_command_check(t_parser *parser, t_list **ls_env)
 				close(fd);
 				parser->red = parser->red->next;
 			}
+		if (parser->red->typeofFile == 2)
+			fd = open(parser->red->filename,  O_RDWR | O_CREAT | O_TRUNC, 0644);
 		if (parser->red->typeofFile == 3)
-			fd = open(parser->red->filename, O_CREAT | O_RDWR, 0644);
+		{
+			if (access(parser->red->filename, F_OK))
+			{
+				printf("%s: No such file or directory\n", parser->red->filename);
+				return;
+			}
+			fd = open(parser->red->filename, O_RDWR, 0644);
+		}
 		else
 			fd = open(parser->red->filename, O_CREAT | O_TRUNC | O_RDWR, 0644);
 		std_in = ft_redirection(parser->red, fd);
 		parser->red = parser->red->next;
 	}
-		if (!ft_memcmp(parser->command[0], "pwd", 4))
+	if (!ft_memcmp(parser->command[0], "pwd", 4))
 			ft_pwd_command();
 		else if (!ft_memcmp(parser->command[0], "cd", 3))
 			ft_cd_command(parser->command, ft_list_to_str(*ls_env));
