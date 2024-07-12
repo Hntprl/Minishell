@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/12 23:02:12 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/12 23:45:41 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void ft_command_check(t_parser *parser, t_list **ls_env)
 			}
 		if (parser->red->typeofFile == 2)
 			fd = open(parser->red->filename,  O_RDWR | O_CREAT | O_APPEND, 0644);
-		if (parser->red->typeofFile == 3)
+		else if (parser->red->typeofFile == 3)
 		{
 			if (access(parser->red->filename, F_OK))
 			{
@@ -109,24 +109,24 @@ void ft_command_check(t_parser *parser, t_list **ls_env)
 		parser->red = parser->red->next;
 	}
 	if (!ft_memcmp(parser->command[0], "pwd", 4))
-			ft_pwd_command();
-		else if (!ft_memcmp(parser->command[0], "cd", 3))
-			ft_cd_command(parser->command, ft_list_to_str(*ls_env));
-		else if (!ft_memcmp(parser->command[0], "echo", 5))
-			ft_echo_command(parser->command, ft_list_to_str(*ls_env));
-		else if (!ft_memcmp(parser->command[0], "env", 4))
+		ft_pwd_command();
+	else if (!ft_memcmp(parser->command[0], "cd", 3))
+		ft_cd_command(parser->command, ft_list_to_str(*ls_env));
+	else if (!ft_memcmp(parser->command[0], "echo", 5))
+		ft_echo_command(parser->command, ft_list_to_str(*ls_env));
+	else if (!ft_memcmp(parser->command[0], "env", 4))
 			ft_env_command(*ls_env);
-		else if (!ft_memcmp(parser->command[0], "unset", 6))
-			ft_unset_command(parser->command, ls_env);
-		else if (!ft_memcmp(parser->command[0], "export", 7))
-			ft_export_command(parser->command, *ls_env);
-		else if (!ft_memcmp(parser->command[0], "exit", 5))
-			(write(1, "exit!\n", 6), exit(0));
-		else
-			shell_commands(parser->command, *ls_env);
-		dup2(std_in, 1);
-		dup2(std_in, 0);
-		close(std_in);
+	else if (!ft_memcmp(parser->command[0], "unset", 6))
+		ft_unset_command(parser->command, ls_env);
+	else if (!ft_memcmp(parser->command[0], "export", 7))
+		ft_export_command(parser->command, *ls_env);
+	else if (!ft_memcmp(parser->command[0], "exit", 5))
+		(write(1, "exit!\n", 6), exit(0));
+	else
+		shell_commands(parser->command, *ls_env);
+	dup2(std_in, 1);
+	dup2(std_in, 0);
+	close(std_in);
 }
 
 // Read from 0 ...
@@ -193,7 +193,7 @@ void minishell(t_list *ls_env)
 				continue;
 			}
 			fill_parser(lexer, &parser);
-			 ft_command_check(parser, &ls_env);
+			ft_command_check(parser, &ls_env);
 			free_lexer(&lexer);
 			free_parser(&parser);
 		}
