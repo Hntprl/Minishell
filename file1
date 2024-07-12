@@ -1,0 +1,19 @@
+total 1360
+drwxr-xr-x 2 amarouf candidates    4096 Jul 12 23:02 commands
+-rw-r--r-- 1 amarouf candidates    1305 Jul  9 02:18 commands.c
+-rw-r--r-- 1 amarouf candidates    1740 Jul  8 22:40 env_commands.c
+-rw-r--r-- 1 amarouf candidates    2069 Jul 10 00:57 environment.c
+-rw-r--r-- 1 amarouf candidates       0 Jul 12 23:02 file1
+-rw-r--r-- 1 amarouf candidates    1436 Jul 11 22:24 free.c
+-rw-r--r-- 1 amarouf candidates    1231 Jul  9 01:11 helper.c
+-rw-r--r-- 1 amarouf candidates    3466 Jul  8 23:05 lexer.c
+-rw-r--r-- 1 amarouf candidates    3417 Jul  8 22:40 libft_funcs.c
+-rw-r--r-- 1 amarouf candidates    1645 Jul  8 22:40 lincked_list.c
+-rw-r--r-- 1 amarouf candidates    1152 Jul  8 22:40 lincked_list_clear.c
+-rw-r--r-- 1 amarouf candidates     550 Jul  9 19:55 Makefile
+-rwxr-xr-x 1 amarouf candidates 1312152 Jul 12 23:02 minishell
+-rw-r--r-- 1 amarouf candidates    5395 Jul 12 23:02 minishell.c
+-rw-r--r-- 1 amarouf candidates    4847 Jul 11 22:54 minishell.h
+-rw-r--r-- 1 amarouf candidates    5380 Jul  9 01:08 parser.c
+drwxr-xr-x 2 amarouf candidates    4096 Jul 12 23:02 pipex
+-rw-r--r-- 1 amarouf candidates    2233 Jul  8 22:40 split.c

@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/12 22:48:05 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/12 23:02:12 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,20 @@ void ft_command_check(t_parser *parser, t_list **ls_env)
 	{
 		while (parser->red->next && parser->red->typeofFile == parser->red->next->typeofFile)
 			{
+				if (parser->red->typeofFile == 3)
+				{
+					if (access(parser->red->filename, F_OK))
+					{
+						printf("%s: No such file or directory\n", parser->red->filename);
+						return;
+					}
+				}
 				fd = open(parser->red->filename, O_CREAT | O_RDWR, 0644);
 				close(fd);
 				parser->red = parser->red->next;
 			}
 		if (parser->red->typeofFile == 2)
-			fd = open(parser->red->filename,  O_RDWR | O_CREAT | O_TRUNC, 0644);
+			fd = open(parser->red->filename,  O_RDWR | O_CREAT | O_APPEND, 0644);
 		if (parser->red->typeofFile == 3)
 		{
 			if (access(parser->red->filename, F_OK))
