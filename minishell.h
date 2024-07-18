@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:10:07 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/11 22:54:21 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/17 20:48:17 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ void					ft_lstdelone(t_list *lst);
 int						ft_lstsize(t_list *lst);
 t_list					*ft_lstlast(t_list *lst);
 void					del(void *lst);
+int						ft_parsersize(t_parser *lst);
 // Commands
 void					ft_command_check(t_parser *parser, t_list **ls_env);
 void					ft_pwd_command(void);

@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/12 23:45:41 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/18 22:06:32 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,84 +49,106 @@ void shell_commands(char **split, t_list *env)
 	(free(path), wait(&pid));
 }
 
-int ft_redirection(t_file_red *red, int fd)
+void ft_redirection(t_file_red *red, int fd)
 {
-	int std_in = 1;
-	int std_out = 0;
-
-	if (red->typeofFile == 4 || red->typeofFile == 2)
+	if (red->typeofFile == REDIRECTION_OUT || red->typeofFile == REDIRECTION_APPEND)
 	{
-		std_in = dup(1);
 		dup2(fd, 1);
 		close(fd);
-		return(std_in);
 	}
-	else if (red->typeofFile == 3)
+	else if (red->typeofFile == REDIRECTION_IN)
 	{
-		std_out = dup(0);
 		dup2(fd, 0);
 		close(fd);
-		return(std_out);
 	}
-	return (-1337);
 }
 
-// Commands :) .
-void ft_command_check(t_parser *parser, t_list **ls_env)
+int ft_buildins(t_parser *parser, t_list **ls_env)
 {
-	int fd = 1;
-	int std_in = -999;
-	if (parser->red)
-	{
+	if (!ft_memcmp(parser->command[0], "pwd", 4))
+		return (ft_pwd_command(), 1);
+	else if (!ft_memcmp(parser->command[0], "cd", 3))
+		return (ft_cd_command(parser->command, ft_list_to_str(*ls_env)) ,1);
+	else if (!ft_memcmp(parser->command[0], "echo", 5))
+		return (ft_echo_command(parser->command, ft_list_to_str(*ls_env)) ,1);
+	else if (!ft_memcmp(parser->command[0], "env", 4))
+		return (ft_env_command(*ls_env) ,1);
+	else if (!ft_memcmp(parser->command[0], "unset", 6))
+		return (ft_unset_command(parser->command, ls_env) ,1);
+	else if (!ft_memcmp(parser->command[0], "export", 7))
+		return (ft_export_command(parser->command, *ls_env) ,1);
+	else if (!ft_memcmp(parser->command[0], "exit", 5))
+		return ((write(1, "exit!\n", 6), exit(0)) ,1);
+	else
+		return (0);
+}
+
+int open_files(t_parser *parser)
+{
+	int fd;
+
+	fd = 0;
 		while (parser->red->next && parser->red->typeofFile == parser->red->next->typeofFile)
 			{
-				if (parser->red->typeofFile == 3)
+				if (parser->red->typeofFile == REDIRECTION_IN)
 				{
 					if (access(parser->red->filename, F_OK))
 					{
 						printf("%s: No such file or directory\n", parser->red->filename);
-						return;
+						return (-1337);
 					}
 				}
 				fd = open(parser->red->filename, O_CREAT | O_RDWR, 0644);
 				close(fd);
 				parser->red = parser->red->next;
 			}
-		if (parser->red->typeofFile == 2)
+		if (parser->red->typeofFile == REDIRECTION_APPEND)
 			fd = open(parser->red->filename,  O_RDWR | O_CREAT | O_APPEND, 0644);
-		else if (parser->red->typeofFile == 3)
+		else if (parser->red->typeofFile == REDIRECTION_IN)
 		{
 			if (access(parser->red->filename, F_OK))
 			{
 				printf("%s: No such file or directory\n", parser->red->filename);
-				return;
+				return (-1337);
 			}
 			fd = open(parser->red->filename, O_RDWR, 0644);
 		}
 		else
 			fd = open(parser->red->filename, O_CREAT | O_TRUNC | O_RDWR, 0644);
-		std_in = ft_redirection(parser->red, fd);
-		parser->red = parser->red->next;
+	return (fd);
+}
+
+void ft_single_command(t_parser *parser, t_list **ls_env)
+{
+	int fd = 1;
+	int std_in = 0;
+	int std_out = 1;
+	std_in = dup(0);
+	std_out = dup(1);
+	
+	if (parser->red)
+	{
+		fd = open_files(parser);
+		ft_redirection(parser->red, fd);
 	}
-	if (!ft_memcmp(parser->command[0], "pwd", 4))
-		ft_pwd_command();
-	else if (!ft_memcmp(parser->command[0], "cd", 3))
-		ft_cd_command(parser->command, ft_list_to_str(*ls_env));
-	else if (!ft_memcmp(parser->command[0], "echo", 5))
-		ft_echo_command(parser->command, ft_list_to_str(*ls_env));
-	else if (!ft_memcmp(parser->command[0], "env", 4))
-			ft_env_command(*ls_env);
-	else if (!ft_memcmp(parser->command[0], "unset", 6))
-		ft_unset_command(parser->command, ls_env);
-	else if (!ft_memcmp(parser->command[0], "export", 7))
-		ft_export_command(parser->command, *ls_env);
-	else if (!ft_memcmp(parser->command[0], "exit", 5))
-		(write(1, "exit!\n", 6), exit(0));
+	if (ft_buildins(parser, ls_env))
+	{
+		(dup2(std_out, 1), close(std_out));
+		(dup2(std_in, 0), close(std_in));	
+		return;
+	}
 	else
-		shell_commands(parser->command, *ls_env);
-	dup2(std_in, 1);
-	dup2(std_in, 0);
-	close(std_in);
+		shell_commands(parser->command, (*ls_env));
+	(dup2(std_out, 1), close(std_out));
+	(dup2(std_in, 0), close(std_in));
+}
+
+// Commands :) .
+void ft_command_check(t_parser *parser, t_list **ls_env)
+{
+	
+	if (ft_parsersize(parser) == 1)
+		ft_single_command(parser, ls_env);
 }
 
 // Read from 0 ...
