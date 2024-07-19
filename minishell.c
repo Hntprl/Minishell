@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/18 22:06:32 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/18 22:48:16 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void shell_commands(char **split, t_list *env)
 {
 	char *path;
 	char *cmd;
+	char *joined_cmd;
 	int pid;
 	char **envp;
 
@@ -43,10 +44,15 @@ void shell_commands(char **split, t_list *env)
 	pid = fork();
 	if (pid == -1)
 		(write(1, "Error:Fork!", 11), exit(1));
-	path = ft_checkaccess(envp, ft_strjoin("/", split[0]));
 	if (pid == 0)
-		(commandcheck(envp, cmd), execve(ft_strjoin(path, cmd), split, envp));
-	(free(path), wait(&pid));
+	{
+		joined_cmd = ft_strjoin("/", split[0]);
+		path = ft_checkaccess(envp, joined_cmd);
+		free(joined_cmd);
+		joined_cmd = ft_strjoin(path, cmd);
+		(commandcheck(envp, cmd), free(cmd), execve(joined_cmd, split, envp));
+	}
+	(wait(&pid), free(cmd), free(envp));
 }
 
 void ft_redirection(t_file_red *red, int fd)
@@ -78,7 +84,7 @@ int ft_buildins(t_parser *parser, t_list **ls_env)
 	else if (!ft_memcmp(parser->command[0], "export", 7))
 		return (ft_export_command(parser->command, *ls_env) ,1);
 	else if (!ft_memcmp(parser->command[0], "exit", 5))
-		return ((write(1, "exit!\n", 6), exit(0)) ,1);
+		return ((write(1, "exit\n", 5), exit(0)) ,1);
 	else
 		return (0);
 }
@@ -129,6 +135,8 @@ void ft_single_command(t_parser *parser, t_list **ls_env)
 	if (parser->red)
 	{
 		fd = open_files(parser);
+		if (fd == -1337)
+			return;
 		ft_redirection(parser->red, fd);
 	}
 	if (ft_buildins(parser, ls_env))
@@ -181,9 +189,7 @@ int check_words(t_lexer *lexer)
 		if (current->token == WORD)
 		{
 			if (check_quotes(current->str) == 0)
-			{
 				return (0);
-			}
 		}
 		current = current->next;
 	}
