@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 00:57:53 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/18 22:23:49 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/08 01:32:10 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ int echo_print_variables(char *command, int i, char **env)
 		printf("%s", var_name);
 	else
 		printf("%s", var_value);
-	free(var_name);
 	return (i = name_end);
 }
 
@@ -57,10 +56,9 @@ void	ft_echo_command(char **command, char **env)
 	int		i;
 	int		j;
 	int		flag;
-	int		is_found;
+
 
 	flag = 0;
-	is_found = 0;
 	j = 1;
 	if (!ft_memcmp(command[1], "-n", 3))
 		flag = 1;
@@ -68,7 +66,7 @@ void	ft_echo_command(char **command, char **env)
 	{
 		i = 0;
 		if (!command[j])
-			printf("");
+			return;
 		else if ((!ft_memcmp(command[j], "$", 1)))
 			{
 				while (command[j][i] != '\0')

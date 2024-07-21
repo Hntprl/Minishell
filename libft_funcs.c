@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft_funcs.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochemsi <ochemsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abdellah <abdellah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 00:28:55 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/05 09:48:59 by ochemsi          ###   ########.fr       */
+/*   Updated: 2024/07/20 18:57:51 by abdellah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,4 +184,30 @@ int	ft_atoi(char *str)
 		i++;
 	}
 	return (res * sign);
+}
+
+void	close_fd(int fd[2])
+{
+	close(fd[0]);
+	close(fd[1]);
+}
+
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	size_t			i;
+	unsigned char	c1;
+	unsigned char	c2;
+
+	i = 0;
+	while ((s1[i] != '\0' || s2[i] != '\0') && i < n)
+	{
+		c1 = s1[i];
+		c2 = s2[i];
+		if (c1 != c2)
+		{
+			return (c1 - c2);
+		}
+		i++;
+	}
+	return (0);
 }
