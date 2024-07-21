@@ -6,7 +6,7 @@
 /*   By: abdellah <abdellah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/21 15:04:58 by abdellah         ###   ########.fr       */
+/*   Updated: 2024/07/21 17:59:42 by abdellah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,20 +146,20 @@ void ft_single_command(t_parser *parser, t_list **ls_env)
 
 void ft_multiple_commands(t_parser *parser,t_list **ls_env)
 {
-	int std_in = 0;
-	int std_out = 1;
-	std_in = dup(0);
-	std_out = dup(1);
-	// int fd = 0;
 	int p[2];
+	// int std_in = 0;
+	// int std_out = 1;
+	// std_in = dup(0);
+	// std_out = dup(1);
 	
 	pipe(p);
 	ft_first_command(parser, ls_env, p);
+	close(p[1]);
 	parser = parser->next;
-	// if (ft_parsersize(parser) > 2)
 	ft_last_command(parser, ls_env, p);
-	dup2(std_out, 1), close(std_out);
-	(dup2(std_in, 0), close(std_in));
+	close(p[0]);
+	// (dup2(std_out, 1), close(std_out));
+	// (dup2(std_in, 0), close(std_in));
 }
 
 // Commands :) .
@@ -170,6 +170,7 @@ void ft_command_check(t_parser *parser, t_list **ls_env)
 		ft_single_command(parser, ls_env);
 	else
 		ft_multiple_commands(parser, ls_env);
+	// printf("command check\n");
 }
 
 // Read from 0 ...

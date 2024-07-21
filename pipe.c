@@ -6,7 +6,7 @@
 /*   By: abdellah <abdellah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 18:55:43 by abdellah          #+#    #+#             */
-/*   Updated: 2024/07/21 15:07:19 by abdellah         ###   ########.fr       */
+/*   Updated: 2024/07/21 17:56:19 by abdellah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ void	ft_last_command(t_parser *parser, t_list **ls_env, int p[2])
 	if (pid == 0)
 	{
 		while (parser->red)
-        {
-            fd = open_files(parser);
-            ft_redirection(parser->red, fd);
-            parser->red = parser->red->next;
-        }
+		{
+			fd = open_files(parser);
+			ft_redirection(parser->red, fd);
+			parser->red = parser->red->next;
+		}
 		dup2(p[0], 0);
 		close_fd(p);
 		cmd1 = parser->command;
@@ -44,6 +44,7 @@ void	ft_last_command(t_parser *parser, t_list **ls_env, int p[2])
 		execve(ft_strjoin(ft_checkaccess(envp, cmd2), cmd2), cmd1, envp);
 		exit(1);
 	}
+		waitpid(pid, NULL, 0);
 }
 
 void	ft_first_command(t_parser *parser, t_list **ls_env, int p[2])
@@ -67,7 +68,6 @@ void	ft_first_command(t_parser *parser, t_list **ls_env, int p[2])
         }
         dup2(p[1], 1);
         close_fd(p);
-        close(0);
 		cmd1 = parser->command;
 		if (ft_buildins(parser, ls_env))
 			return ;
@@ -76,4 +76,5 @@ void	ft_first_command(t_parser *parser, t_list **ls_env, int p[2])
 		execve(ft_strjoin(ft_checkaccess(envp, cmd2), cmd2), cmd1, envp);
 		exit(1);
 	}
+	waitpid(pid, NULL, 0);
 }
