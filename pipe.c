@@ -6,7 +6,7 @@
 /*   By: abdellah <abdellah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 18:55:43 by abdellah          #+#    #+#             */
-/*   Updated: 2024/07/22 18:39:42 by abdellah         ###   ########.fr       */
+/*   Updated: 2024/07/22 18:46:35 by abdellah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	ft_last_command(t_parser *parser, t_list **ls_env, int p[2])
 	char **envp;
 	int fd;
 	int in = dup(0);
+
 
 	envp = ft_list_to_str((*ls_env));
 	pid = fork();
