@@ -6,7 +6,7 @@
 /*   By: abdellah <abdellah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/22 18:44:36 by abdellah         ###   ########.fr       */
+/*   Updated: 2024/07/22 21:48:27 by abdellah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ int open_files(t_parser *parser)
 void ft_single_command(t_parser *parser, t_list **ls_env)
 {
 	int fd = 1;
+	int in = dup(0);
 	int std_in = 0;
 	int std_out = 1;
 	std_in = dup(0);
@@ -133,8 +134,11 @@ void ft_single_command(t_parser *parser, t_list **ls_env)
 	{
 		fd = open_files(parser);
 		if (fd == -1337)
+		{
+			dup2(in, 0);
 			return ;
-		ft_redirection(parser->red, fd);
+		}
+		in = ft_redirection(parser->red, fd);
 		parser->red = parser->red->next;
 	}
 	if (ft_buildins(parser, ls_env))
