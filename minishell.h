@@ -6,7 +6,7 @@
 /*   By: abdellah <abdellah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:10:07 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/21 14:56:38 by abdellah         ###   ########.fr       */
+/*   Updated: 2024/07/21 18:31:24 by abdellah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void					del(void *lst);
 void					close_fd(int fd[2]);
 int						ft_strncmp(const char *s1, const char *s2, size_t n);
 int						ft_parsersize(t_parser *lst);
-void					ft_first_command(t_parser *parser, t_list **ls_env, int fd[2]);
+int					ft_first_command(t_parser *parser, t_list **ls_env, int fd[2]);
 // Commands
 void					ft_command_check(t_parser *parser, t_list **ls_env);
 void					ft_pwd_command(void);
@@ -128,7 +128,7 @@ void					shell_commands(char **split, t_list *env);
 void					minishell(t_list *ls_env);
 void					pipex(int argc, char **argv, char **envp);
 int						open_files(t_parser *parser);
-void ft_redirection(t_file_red *red, int fd);
+int ft_redirection(t_file_red *red, int fd);
 void	ft_last_command(t_parser *parser, t_list **ls_env, int p[2]);
 /////////////////////////////
 

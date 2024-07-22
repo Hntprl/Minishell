@@ -6,7 +6,7 @@
 /*   By: abdellah <abdellah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/21 17:59:42 by abdellah         ###   ########.fr       */
+/*   Updated: 2024/07/21 18:32:45 by abdellah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,18 +49,21 @@ void shell_commands(char **split, t_list *env)
 	(free(path), wait(&pid));
 }
 
-void ft_redirection(t_file_red *red, int fd)
+int ft_redirection(t_file_red *red, int fd)
 {
 	if (red->typeofFile == REDIRECTION_OUT || red->typeofFile == REDIRECTION_APPEND)
 	{
 		dup2(fd, 1);
 		close(fd);
+		return (1);
 	}
 	else if (red->typeofFile == REDIRECTION_IN)
 	{
 		dup2(fd, 0);
 		close(fd);
+		return (0);
 	}
+	return (-99);
 }
 
 int ft_buildins(t_parser *parser, t_list **ls_env)
@@ -129,6 +132,8 @@ void ft_single_command(t_parser *parser, t_list **ls_env)
 	while (parser->red)
 	{
 		fd = open_files(parser);
+		if (fd == -1337)
+			return ;
 		ft_redirection(parser->red, fd);
 		parser->red = parser->red->next;
 	}
@@ -147,10 +152,6 @@ void ft_single_command(t_parser *parser, t_list **ls_env)
 void ft_multiple_commands(t_parser *parser,t_list **ls_env)
 {
 	int p[2];
-	// int std_in = 0;
-	// int std_out = 1;
-	// std_in = dup(0);
-	// std_out = dup(1);
 	
 	pipe(p);
 	ft_first_command(parser, ls_env, p);
@@ -158,8 +159,6 @@ void ft_multiple_commands(t_parser *parser,t_list **ls_env)
 	parser = parser->next;
 	ft_last_command(parser, ls_env, p);
 	close(p[0]);
-	// (dup2(std_out, 1), close(std_out));
-	// (dup2(std_in, 0), close(std_in));
 }
 
 // Commands :) .
