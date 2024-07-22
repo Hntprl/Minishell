@@ -6,7 +6,7 @@
 /*   By: abdellah <abdellah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:10:07 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/21 18:31:24 by abdellah         ###   ########.fr       */
+/*   Updated: 2024/07/22 18:29:56 by abdellah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ void					pipex(int argc, char **argv, char **envp);
 int						open_files(t_parser *parser);
 int ft_redirection(t_file_red *red, int fd);
 void	ft_last_command(t_parser *parser, t_list **ls_env, int p[2]);
+void	ft_all_commands(t_parser *parser, t_list **ls_env, int p[2]);
 /////////////////////////////
 
 ////////////////////////////

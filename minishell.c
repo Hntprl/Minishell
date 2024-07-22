@@ -6,7 +6,7 @@
 /*   By: abdellah <abdellah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/21 18:32:45 by abdellah         ###   ########.fr       */
+/*   Updated: 2024/07/22 15:14:54 by abdellah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,8 @@ void ft_multiple_commands(t_parser *parser,t_list **ls_env)
 	ft_first_command(parser, ls_env, p);
 	close(p[1]);
 	parser = parser->next;
+	// if (ft_parsersize(parser) > 2)
+	// 	ft_all_commands(parser, ls_env, p);
 	ft_last_command(parser, ls_env, p);
 	close(p[0]);
 }
