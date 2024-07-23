@@ -6,7 +6,7 @@
 /*   By: abdellah <abdellah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:10:07 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/22 21:45:43 by abdellah         ###   ########.fr       */
+/*   Updated: 2024/07/23 14:09:55 by abdellah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ char					*ft_find_env_value(char *var_name, char **env);
 void					shell_commands(char **split, t_list *env);
 void					minishell(t_list *ls_env);
 void					pipex(int argc, char **argv, char **envp);
-int open_files(t_parser *parser);
+int open_files(t_parser *parser, int std_in);
 int ft_redirection(t_file_red *red, int fd);
 void ft_last_command(t_parser *parser, t_list **ls_env, int p[2]);
 void	ft_all_commands(t_parser *parser, t_list **ls_env, int p[2]);

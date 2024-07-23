@@ -6,7 +6,7 @@
 /*   By: abdellah <abdellah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/22 21:48:27 by abdellah         ###   ########.fr       */
+/*   Updated: 2024/07/23 15:15:18 by abdellah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int ft_buildins(t_parser *parser, t_list **ls_env)
 		return (0);
 }
 
-int open_files(t_parser *parser)
+int open_files(t_parser *parser, int std_in)
 {
 	int fd;
 
@@ -97,7 +97,8 @@ int open_files(t_parser *parser)
 				{
 					if (access(parser->red->filename, F_OK))
 					{
-						printf("%s: No such file or directory\n", parser->red->filename);
+						write(std_in, parser->red->filename, ft_strlen(parser->red->filename));
+						write(std_in, ": No such file or directory\n", 29);
 						return (-1337);
 					}
 				}
@@ -109,11 +110,12 @@ int open_files(t_parser *parser)
 			fd = open(parser->red->filename,  O_RDWR | O_CREAT | O_APPEND, 0644);
 		else if (parser->red->typeofFile == REDIRECTION_IN)
 		{
-			if (access(parser->red->filename, F_OK))
-			{
-				printf("%s: No such file or directory\n", parser->red->filename);
-				return (-1337);
-			}
+				if (access(parser->red->filename, F_OK))
+					{
+						write(std_in, parser->red->filename, ft_strlen(parser->red->filename));
+						write(std_in, ": No such file or directory\n", 29);
+						return (-1337);
+					}
 			fd = open(parser->red->filename, O_RDWR, 0644);
 		}
 		else
@@ -124,22 +126,20 @@ int open_files(t_parser *parser)
 void ft_single_command(t_parser *parser, t_list **ls_env)
 {
 	int fd = 1;
-	int in = dup(0);
+	// int in = dup(0);
 	int std_in = 0;
 	int std_out = 1;
+	// int in = 0;
 	std_in = dup(0);
 	std_out = dup(1);
 	
 	while (parser->red)
 	{
-		fd = open_files(parser);
-		if (fd == -1337)
-		{
-			dup2(in, 0);
-			return ;
-		}
-		in = ft_redirection(parser->red, fd);
-		parser->red = parser->red->next;
+			fd = open_files(parser, std_in);
+			if (fd == -1337)
+				break;
+			ft_redirection(parser->red, fd);
+			parser->red = parser->red->next;
 	}
 	if (ft_buildins(parser, ls_env))
 	{
@@ -147,24 +147,39 @@ void ft_single_command(t_parser *parser, t_list **ls_env)
 		(dup2(std_in, 0), close(std_in));	
 		return;
 	}
-	else
-		shell_commands(parser->command, (*ls_env));
+		else
+			shell_commands(parser->command, (*ls_env));
 	(dup2(std_out, 1), close(std_out));
 	(dup2(std_in, 0), close(std_in));
 }
 
 void ft_multiple_commands(t_parser *parser,t_list **ls_env)
 {
+	int input;
 	int p[2];
 	
 	pipe(p);
 	ft_first_command(parser, ls_env, p);
 	close(p[1]);
 	parser = parser->next;
-	// if (ft_parsersize(parser) > 2)
-	// 	ft_all_commands(parser, ls_env, p);
-	ft_last_command(parser, ls_env, p);
-	close(p[0]);
+	input = p[0];
+	if (ft_parsersize(parser) > 1)
+	{
+		while (parser->next->next)
+		{
+			dup2(input, 0);
+			close(input);
+			pipe(p);
+			ft_all_commands(parser, ls_env, p);
+			(close (p[1]), input = p[0]);
+			parser = parser->next;
+		}
+	}
+	if (dup2(input, 0) == -1)
+		(exit(write (2, "Dup2: dup2 failed!\n", 19)), close(input));
+	(close(input), ft_last_command(parser, ls_env, p), close(0));
+	while (wait(NULL) == -1)
+		;
 }
 
 // Commands :) .
