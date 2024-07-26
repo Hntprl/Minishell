@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/26 17:52:08 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/26 18:18:14 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void shell_commands(char **split, t_list *env)
 	char **envp;
 	char *jn;
 
+	jn = NULL;
 	pid = fork();
 	if (pid == -1)
 		(write(1, "Error:Fork!", 11), exit(1));
@@ -46,11 +47,9 @@ void shell_commands(char **split, t_list *env)
 	{
 		envp = ft_list_to_str(env);
 		cmd = ft_strjoin("/", split[0]);
-		jn = ft_strjoin("/", split[0]);
 		path = ft_checkaccess(envp, jn);
-		free(jn);
 		jn = ft_strjoin(path, cmd);
-		(commandcheck(envp, cmd), execve(jn , split, envp));
+		(commandcheck(envp, cmd), free(cmd), execve(jn , split, envp));
 	}
 	wait(&pid);
 }

@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:10:07 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/26 17:58:16 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/26 18:15:32 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ char					*ft_substr(const char *s, unsigned int start,
 							size_t len);
 char					*ft_strrchr(const char *s, int c);
 char					*ft_strchr(const char *s, int c);
+void					close_fd(int fd[2]);
 // Lincked-list
 t_list					*ft_lstnew(char *ontent);
 char					**ft_list_to_str(t_list *env);
@@ -111,10 +112,8 @@ void					ft_lstdelone(t_list *lst);
 int						ft_lstsize(t_list *lst);
 t_list					*ft_lstlast(t_list *lst);
 void					del(void *lst);
-void					close_fd(int fd[2]);
 int						ft_strncmp(const char *s1, const char *s2, size_t n);
 int						ft_parsersize(t_parser *lst);
-void				ft_first_command(t_parser *parser, t_list **ls_env, int fd[2]);
 // Commands
 void					ft_command_check(t_parser *parser, t_list **ls_env);
 void					ft_pwd_command(void);
@@ -133,11 +132,12 @@ char					*ft_find_env_value(char *var_name, char **env, int *is_invalid);
 // Shell-build
 void					shell_commands(char **split, t_list *env);
 void					minishell(t_list *ls_env);
-void					pipex(int argc, char **argv, char **envp);
-int open_files(t_parser *parser, int std_in);
-int ft_redirection(t_file_red *red, int fd);
-void ft_last_command(t_parser *parser, t_list **ls_env, int p[2]);
-void	ft_all_commands(t_parser *parser, t_list **ls_env, int p[2]);
+// Pipes
+int						open_files(t_parser *parser, int std_in);
+int						ft_redirection(t_file_red *red, int fd);
+void					ft_first_command(t_parser *parser, t_list **ls_env, int fd[2]);
+void					ft_all_commands(t_parser *parser, t_list **ls_env, int p[2]);
+void					ft_last_command(t_parser *parser, t_list **ls_env, int p[2]);
 /////////////////////////////
 
 ////////////////////////////
