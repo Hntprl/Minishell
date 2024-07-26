@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:08:51 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/26 17:33:10 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/26 18:32:33 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	commandcheck(char **envp, char *cmd2)
 	{
 		cmd2 = cmd2 + 1;
 		write(2, cmd2, ft_strlen(cmd2));
-		exit(write(2, ": command not found\n", 20));
+		(free(cmd2), exit(write(2, ": command not found\n", 20)));
 	}
 }
 
