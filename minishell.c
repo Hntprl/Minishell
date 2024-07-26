@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abdellah <abdellah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/26 16:57:21 by abdellah         ###   ########.fr       */
+/*   Updated: 2024/07/26 17:32:24 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,16 @@ void shell_commands(char **split, t_list *env)
 	char *cmd;
 	int pid;
 	char **envp;
+	char *jn;
 
 	envp = ft_list_to_str(env);
 	cmd = ft_strjoin("/", split[0]);
 	pid = fork();
 	if (pid == -1)
 		(write(1, "Error:Fork!", 11), exit(1));
-	path = ft_checkaccess(envp, ft_strjoin("/", split[0]));
+	jn = ft_strjoin("/", split[0]);
+	path = ft_checkaccess(envp, jn);
+	free(jn);
 	if (pid == 0)
 		(commandcheck(envp, cmd), execve(ft_strjoin(path, cmd), split, envp));
 	(free(path), wait(&pid));
@@ -126,10 +129,8 @@ int open_files(t_parser *parser, int std_in)
 void ft_single_command(t_parser *parser, t_list **ls_env)
 {
 	int fd = 1;
-	// int in = dup(0);
 	int std_in = 0;
 	int std_out = 1;
-	// int in = 0;
 	std_in = dup(0);
 	std_out = dup(1);
 	
@@ -244,8 +245,6 @@ void minishell(t_list *ls_env)
 	char *rd_history;
 	char *prompt;
 
-	// parser->in = 0;
-	// parser->out = 0;
 	lexer = NULL;
 	parser = NULL;
 	prompt = BOLD RED "Mini" YELLOW "shell" RED ">" RESET;

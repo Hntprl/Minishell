@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 00:57:53 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/08 01:32:10 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/26 17:28:00 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ void	ft_echo_command(char **command, char **env)
 	int		j;
 	int		flag;
 
-
 	flag = 0;
 	j = 1;
 	if (!ft_memcmp(command[1], "-n", 3))
@@ -83,7 +82,10 @@ void	ft_echo_command(char **command, char **env)
 				}
 			}
 		else
-			printf("%s", command[j]);
+		{
+			if (ft_memcmp(command[j], "-n", 3))
+				printf("%s", command[j]);
+		}
 		printf(" ");
 		j ++;
 	}

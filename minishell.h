@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abdellah <abdellah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:10:07 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/26 16:56:50 by abdellah         ###   ########.fr       */
+/*   Updated: 2024/07/26 17:21:17 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@
 # include <sys/wait.h>
 # include <unistd.h>
 # include <stdbool.h>
-// add path to pipex_bonus.h////////////////////////////
-# include "pipex/pipex_bonus.h"
 // Prompt
 # define RED "\033[31m"
 # define RESET "\033[0m"
