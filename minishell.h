@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:10:07 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/26 17:21:17 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/26 17:58:16 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ void					free_strings(char **strings);
 char					*ft_substr(const char *s, unsigned int start,
 							size_t len);
 char					*ft_strrchr(const char *s, int c);
+char					*ft_strchr(const char *s, int c);
 // Lincked-list
 t_list					*ft_lstnew(char *ontent);
 char					**ft_list_to_str(t_list *env);
@@ -120,7 +121,7 @@ void					ft_pwd_command(void);
 void					ft_cd_command(char **command, char **env);
 void					ft_echo_command(char **command, char **env);
 void					ft_env_command(t_list *env, int export);
-void					ft_export_command(char **split, t_list *env);
+void					ft_export_command(char **split, t_list **env);
 void					ft_unset_command(char **split, t_list **env);
 int						ft_buildins(t_parser *parser, t_list **ls_env);
 // Environment
@@ -128,7 +129,7 @@ void					commandcheck(char **envp, char *cmd2);
 char					*ft_findpath(char **env);
 char					*ft_checkaccess(char **env, char *cmd);
 t_list					*fill_envp(char **env);
-char					*ft_find_env_value(char *var_name, char **env);
+char					*ft_find_env_value(char *var_name, char **env, int *is_invalid);
 // Shell-build
 void					shell_commands(char **split, t_list *env);
 void					minishell(t_list *ls_env);

@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 00:57:53 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/26 17:28:00 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/26 17:55:14 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,26 @@ int ft_getpid(void)
 
 int echo_print_variables(char *command, int i, char **env)
 {
+	int		is_invalid;
 	char	*var_name;
 	char	*var_value = NULL;
 	int		name_end;
 
+	is_invalid = 0;
 	name_end = i + 1;
 	while (command[name_end] != '$' && command[name_end] != '\0')
 		name_end ++;
 	var_name = ft_substr(command, i, (name_end - i));
-	var_value = ft_find_env_value(var_name, env);
+	var_value = ft_find_env_value(var_name, env, &is_invalid);
 	if (var_value == NULL)
 		printf("%s", var_name);
 	else
-		printf("%s", var_value);
+	{
+		if (is_invalid)
+			write(1, "", 1);
+		else
+			printf("%s", var_value);
+	}
 	return (i = name_end);
 }
 

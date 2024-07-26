@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft_funcs.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abdellah <abdellah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 00:28:55 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/20 18:57:51 by abdellah         ###   ########.fr       */
+/*   Updated: 2024/07/26 17:58:03 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,15 +145,11 @@ char	*ft_strrchr(const char *s, int c)
 
 	i = ft_strlen(s);
 	if (c == '\0')
-	{
 		return ((char *)s + i);
-	}
 	while (i >= 0)
 	{
 		if (s[i] == (char)c)
-		{
 			return ((char *)s + i);
-		}
 		i--;
 	}
 	return (0);
@@ -211,3 +207,24 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	}
 	return (0);
 }
+
+char	*ft_strchr(const char *s, int c)
+{
+	int		i;
+	char	*k;
+	char	ch;
+
+	ch = c;
+	i = 0;
+	k = (char *)s;
+	while (k[i] != '\0')
+	{
+		if (k[i] == ch)
+			return (k + i);
+		i++;
+	}
+	if (ch == '\0')
+		return (k + i);
+	return (NULL);
+}
+

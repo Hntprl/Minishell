@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 00:56:51 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/09 01:08:38 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/26 17:47:19 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	ft_cd_command(char **command, char **env)
 {
 	char *home_path;
 
-	home_path = ft_find_env_value("$HOME", env);
+	home_path = ft_find_env_value("$HOME", env, 0);
     if (!command[1])
         chdir(home_path);
 	else if (command[1][0] == '~')

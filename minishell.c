@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/26 17:32:24 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/26 17:52:08 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,20 @@ void shell_commands(char **split, t_list *env)
 	char **envp;
 	char *jn;
 
-	envp = ft_list_to_str(env);
-	cmd = ft_strjoin("/", split[0]);
 	pid = fork();
 	if (pid == -1)
 		(write(1, "Error:Fork!", 11), exit(1));
-	jn = ft_strjoin("/", split[0]);
-	path = ft_checkaccess(envp, jn);
-	free(jn);
 	if (pid == 0)
-		(commandcheck(envp, cmd), execve(ft_strjoin(path, cmd), split, envp));
-	(free(path), wait(&pid));
+	{
+		envp = ft_list_to_str(env);
+		cmd = ft_strjoin("/", split[0]);
+		jn = ft_strjoin("/", split[0]);
+		path = ft_checkaccess(envp, jn);
+		free(jn);
+		jn = ft_strjoin(path, cmd);
+		(commandcheck(envp, cmd), execve(jn , split, envp));
+	}
+	wait(&pid);
 }
 
 int ft_redirection(t_file_red *red, int fd)
@@ -82,7 +85,7 @@ int ft_buildins(t_parser *parser, t_list **ls_env)
 	else if (!ft_memcmp(parser->command[0], "unset", 6))
 		return (ft_unset_command(parser->command, ls_env) ,1);
 	else if (!ft_memcmp(parser->command[0], "export", 7))
-		return (ft_export_command(parser->command, *ls_env) ,1);
+		return (ft_export_command(parser->command, ls_env) ,1);
 	else if (!ft_memcmp(parser->command[0], "exit", 5))
 		return ((write(1, "exit!\n", 6), exit(0)) ,1);
 	else

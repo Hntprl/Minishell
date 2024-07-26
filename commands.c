@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 06:56:06 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/26 17:22:31 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/26 17:57:49 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_pwd_command(void)
 	printf("%s\n", getcwd(buf, 225));
 }
 
-char *ft_find_env_value(char *var_name, char **env)
+char *ft_find_env_value(char *var_name, char **env, int *is_invalid)
 {
 	int i;
 
@@ -30,8 +30,8 @@ char *ft_find_env_value(char *var_name, char **env)
 	while (env[i])
 	{
 		if (!ft_memcmp((var_name), env[i], ft_strlen(var_name)))
-			return ((ft_strrchr(env[i], '=') + 1));
+			return ((ft_strchr(env[i], '=') + 1));
 		i ++;
 	}
-	return ("1");
+	return ((*is_invalid) = 1, "1");
 }

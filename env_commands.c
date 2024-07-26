@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_commands.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abdellah <abdellah@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 02:41:11 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/26 16:55:54 by abdellah         ###   ########.fr       */
+/*   Updated: 2024/07/26 17:51:38 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ void	ft_env_command(t_list *env, int export)
 }
 
 // export command .
-void	ft_export_command(char **split, t_list *env)
+void	ft_export_command(char **split, t_list **env)
 {
 	if (split[1] == NULL)
 	{
-		ft_env_command(env, 1);
+		ft_env_command((*env), 1);
 		return ;
 	}
-	ft_lstadd_back(&env, ft_lstnew(split[1]));
+	ft_lstadd_back(env, ft_lstnew(split[1]));
 }
 
 // unset command .
