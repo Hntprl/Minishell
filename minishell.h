@@ -6,7 +6,7 @@
 /*   By: abdellah <abdellah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:10:07 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/24 17:05:47 by abdellah         ###   ########.fr       */
+/*   Updated: 2024/07/26 16:56:50 by abdellah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,14 @@ typedef struct s_list
 	char				*data;
 }						t_list;
 
+typedef struct s_cmd
+{
+	char	**cmd1;
+	char	*cmd2;
+	int		pid;
+	char	**envp;
+}			t_cmd;
+
 ////////////////////////////////////////////////////////////////////
 
 // Function calls
@@ -107,13 +115,13 @@ void					del(void *lst);
 void					close_fd(int fd[2]);
 int						ft_strncmp(const char *s1, const char *s2, size_t n);
 int						ft_parsersize(t_parser *lst);
-int					ft_first_command(t_parser *parser, t_list **ls_env, int fd[2]);
+void				ft_first_command(t_parser *parser, t_list **ls_env, int fd[2]);
 // Commands
 void					ft_command_check(t_parser *parser, t_list **ls_env);
 void					ft_pwd_command(void);
 void					ft_cd_command(char **command, char **env);
 void					ft_echo_command(char **command, char **env);
-void					ft_env_command(t_list *env);
+void					ft_env_command(t_list *env, int export);
 void					ft_export_command(char **split, t_list *env);
 void					ft_unset_command(char **split, t_list **env);
 int						ft_buildins(t_parser *parser, t_list **ls_env);
