@@ -6,7 +6,7 @@
 /*   By: abdellah <abdellah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/23 15:15:18 by abdellah         ###   ########.fr       */
+/*   Updated: 2024/07/26 00:31:04 by abdellah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ void ft_single_command(t_parser *parser, t_list **ls_env)
 	{
 			fd = open_files(parser, std_in);
 			if (fd == -1337)
-				break;
+				return;
 			ft_redirection(parser->red, fd);
 			parser->red = parser->red->next;
 	}
@@ -157,6 +157,10 @@ void ft_multiple_commands(t_parser *parser,t_list **ls_env)
 {
 	int input;
 	int p[2];
+	int std_in;
+	int std_out;
+	std_in = dup(0);
+	std_out = dup(1);
 	
 	pipe(p);
 	ft_first_command(parser, ls_env, p);
@@ -165,7 +169,7 @@ void ft_multiple_commands(t_parser *parser,t_list **ls_env)
 	input = p[0];
 	if (ft_parsersize(parser) > 1)
 	{
-		while (parser->next->next)
+		while (parser->next)
 		{
 			dup2(input, 0);
 			close(input);
@@ -175,11 +179,12 @@ void ft_multiple_commands(t_parser *parser,t_list **ls_env)
 			parser = parser->next;
 		}
 	}
-	if (dup2(input, 0) == -1)
-		(exit(write (2, "Dup2: dup2 failed!\n", 19)), close(input));
-	(close(input), ft_last_command(parser, ls_env, p), close(0));
-	while (wait(NULL) == -1)
-		;
+	ft_last_command(parser, ls_env, p);
+	close(input);
+	close_fd(p);
+	while (wait(NULL) > 0);
+	(dup2(std_out, 1), close(std_out));
+	(dup2(std_in, 0), close(std_in));
 }
 
 // Commands :) .
@@ -190,7 +195,6 @@ void ft_command_check(t_parser *parser, t_list **ls_env)
 		ft_single_command(parser, ls_env);
 	else
 		ft_multiple_commands(parser, ls_env);
-	// printf("command check\n");
 }
 
 // Read from 0 ...
