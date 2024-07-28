@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 00:56:51 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/28 10:38:03 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/28 10:39:52 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void pwd_set(t_list **ls_env, char *pwd)
 			break;
 		list = list->next;
 	}
+	free(list->data);
 	list->data = ft_strjoin(pwd, getcwd(buf, 4096));
 }
 
