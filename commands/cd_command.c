@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 00:56:51 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/28 11:19:08 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/28 11:38:25 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,21 +49,23 @@ int cd_access_check(char **command)
 {
 	char *tmp;
 
-	if (command[1][0] == '~' && command[1][1] != '\0')
+	if (!command[1] || !ft_memcmp("~/", command[1], 3))
+		return (0);
+	else if (command[1][0] == '~' && command[1][1] != '\0')
 	{
 		tmp = (command[1] + 2);
 		if (access(tmp, F_OK) == -1)
 		{
 			write(1, command[1], ft_strlen(command[1]));
 			write(1, ": No such file or directory\n", 38);
-			return 1;		
+			return (1);		
 		}
 	}
 	else if (command[1][0] != '~' && access(command[1], F_OK) == -1)
 	{
 		write(1, command[1], ft_strlen(command[1]));
 		write(1, ": No such file or directory\n", 38);
-		return 1;		
+		return (1);		
 	}
 	return (0);
 }
