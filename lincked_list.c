@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 20:47:51 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/17 20:47:53 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/27 20:12:16 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,21 @@ int	ft_parsersize(t_parser *lst)
 		i++;
 	}
 	return (i);
+}
+
+char **ft_list_to_str(t_list *env)
+{
+	int i;
+	char **envp;
+
+	i = 0;
+	envp = malloc(sizeof(char *) * (ft_lstsize(env) + 1));
+	while (env)
+	{
+		envp[i] = env->data;
+		i++;
+		env = env->next;
+	}
+	envp[i] = NULL;
+	return (envp);
 }

@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 00:28:55 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/26 17:58:03 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/27 20:10:48 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,12 +180,6 @@ int	ft_atoi(char *str)
 		i++;
 	}
 	return (res * sign);
-}
-
-void	close_fd(int fd[2])
-{
-	close(fd[0]);
-	close(fd[1]);
 }
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)

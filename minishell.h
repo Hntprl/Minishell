@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:10:07 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/26 18:15:32 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/28 10:10:29 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int						ft_parsersize(t_parser *lst);
 // Commands
 void					ft_command_check(t_parser *parser, t_list **ls_env);
 void					ft_pwd_command(void);
-void					ft_cd_command(char **command, char **env);
+void					ft_cd_command(char **command, t_list **ls_env);
 void					ft_echo_command(char **command, char **env);
 void					ft_env_command(t_list *env, int export);
 void					ft_export_command(char **split, t_list **env);

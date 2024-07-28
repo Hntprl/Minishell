@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 06:56:06 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/26 17:57:49 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/28 09:40:03 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 // pwd command .
 void	ft_pwd_command(void)
 {
-	char	buf[225];
-	printf("%s\n", getcwd(buf, 225));
+	char	buf[4096];
+	printf("%s\n", getcwd(buf, 4096));
 }
 
 char *ft_find_env_value(char *var_name, char **env, int *is_invalid)

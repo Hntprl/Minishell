@@ -14,7 +14,7 @@ OSRC = $(SRC:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OSRC)
-		$(CC) $(CFLAGS) $(OSRC) -lreadline -o $(NAME) -fsanitize=address 
+		$(CC) $(CFLAGS) $(OSRC) -lreadline -o $(NAME)
 
 clean:
 	$(RM) $(OSRC)

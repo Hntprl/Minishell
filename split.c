@@ -6,24 +6,11 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 00:32:56 by amarouf           #+#    #+#             */
-/*   Updated: 2024/05/27 01:59:59 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/27 20:09:14 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	free_strings(char **strings)
-{
-	int	i;
-
-	i = 0;
-	while (strings[i])
-	{
-		free(strings[i]);
-		i++;
-	}
-	free(strings);
-}
 
 static int	count_words(char const *str, char c)
 {

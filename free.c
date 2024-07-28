@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 22:24:30 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/11 22:24:39 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/27 20:10:54 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,23 @@ void	free_parser(t_parser **parser)
 		}
 		free(tmp);
 	}
+}
+
+void	free_strings(char **strings)
+{
+	int	i;
+
+	i = 0;
+	while (strings[i])
+	{
+		free(strings[i]);
+		i++;
+	}
+	free(strings);
+}
+
+void	close_fd(int fd[2])
+{
+	close(fd[0]);
+	close(fd[1]);
 }
