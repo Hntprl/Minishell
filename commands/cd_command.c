@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 00:56:51 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/28 10:39:52 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/28 11:19:08 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,36 @@ void pwd_set(t_list **ls_env, char *pwd)
 	list->data = ft_strjoin(pwd, getcwd(buf, 4096));
 }
 
+int cd_access_check(char **command)
+{
+	char *tmp;
+
+	if (command[1][0] == '~' && command[1][1] != '\0')
+	{
+		tmp = (command[1] + 2);
+		if (access(tmp, F_OK) == -1)
+		{
+			write(1, command[1], ft_strlen(command[1]));
+			write(1, ": No such file or directory\n", 38);
+			return 1;		
+		}
+	}
+	else if (command[1][0] != '~' && access(command[1], F_OK) == -1)
+	{
+		write(1, command[1], ft_strlen(command[1]));
+		write(1, ": No such file or directory\n", 38);
+		return 1;		
+	}
+	return (0);
+}
+
 void	ft_cd_command(char **command, t_list **ls_env)
 {
 	char *home_path;
 	char **env;
 
+	if (cd_access_check(command))
+		return;
 	env = ft_list_to_str((*ls_env));
 	pwd_set(ls_env, "OLDPWD=");
 	home_path = ft_find_env_value("$HOME", env, 0);
