@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_command.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abdellah <abdellah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 00:56:51 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/28 11:38:25 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/08/02 21:46:00 by abdellah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,15 @@ int cd_access_check(char **command)
 		if (access(tmp, F_OK) == -1)
 		{
 			write(1, command[1], ft_strlen(command[1]));
-			write(1, ": No such file or directory\n", 38);
+			write(1, ": No such file or directory\n", 29);
 			return (1);		
 		}
 	}
 	else if (command[1][0] != '~' && access(command[1], F_OK) == -1)
 	{
 		write(1, command[1], ft_strlen(command[1]));
-		write(1, ": No such file or directory\n", 38);
-		return (1);		
+		write(1, ": No such file or directory\n", 29);
+		return (1);
 	}
 	return (0);
 }

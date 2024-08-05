@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo_command.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abdellah <abdellah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 00:57:53 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/28 11:47:10 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/08/05 15:42:37 by abdellah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,44 @@ int echo_print_variables(char *command, int i, char **env)
 	return (i = name_end);
 }
 
+int is_n(char *str)
+{
+	int i;
+
+	i = 0;
+	if (str[0] == '-' && str[1] == 'n')
+	{
+		i ++;
+		while (str[i])
+		{
+			if (str[i] != 'n')
+				return (0);
+			i ++;
+		}
+	}
+	else
+		return (0);
+	return (1);
+}
+
+int	print_variables(char **command, int j, int i, char **env)
+{
+	while (command[j][i] != '\0')
+	{
+		while (command[j][i] == '$' && command[j][i + 1] == '$')
+		{
+			printf("%d", ft_getpid());
+			i += 2;
+		}
+		if (command[j][i] == '$' && command[j][i + 1] == '\0')
+			(printf("$"), i ++);
+		else
+			i = echo_print_variables(command[j], i, env);
+	}
+	return (i);
+}
+
+
 void	ft_echo_command(char **command, char **env)
 {
 	int		i;
@@ -66,36 +104,26 @@ void	ft_echo_command(char **command, char **env)
 
 	flag = 0;
 	j = 1;
-	if (!ft_memcmp(command[1], "-n", 3))
+	if (is_n(command[j]))
 		flag = 1;
 	while (command[j])
 	{
 		i = 0;
-		if (!command[j])
+		if (!command[j] || (flag && !command[2]))
 			return;
-		else if ((!ft_memcmp(command[j], "$", 1)))
-			{
-				while (command[j][i] != '\0')
-				{
-					while (command[j][i] == '$' && command[j][i + 1] == '$')
-					{
-						printf("%d", ft_getpid());
-						i += 2;
-					}
-					if (command[j][i] == '$' && command[j][i + 1] == '\0')
-						(printf("$"), i ++);
-					else
-						i = echo_print_variables(command[j], i, env);
-				}
-			}
-		else
+		while (command[j][i])
 		{
-			if (ft_memcmp(command[j], "-n", 3))
-				printf("%s", command[j]);
+			if (command[j][i] == '$')
+				i = print_variables(command, j, i, env);
+			else
+			{
+				if (!is_n(command[j]))
+					printf("%c", command[j][i]);
+				i ++;
+			}
 		}
-		if ((!command[1]) || (flag && !command[2]))
-			break;
-		printf(" ");
+		if (command[j + 1] && !is_n(command[j]))
+			printf(" ");
 		j ++;
 	}
 	if (!flag)
