@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ochemsi <ochemsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 18:55:43 by abdellah          #+#    #+#             */
-/*   Updated: 2024/07/27 20:03:57 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/08/08 22:37:43 by ochemsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void ft_pipe_redirections(t_parser *parser, int p[2], int pipe)
 void	ft_first_command(t_parser *parser, t_list **ls_env, int p[2])
 {
 	t_cmd cmd;
+	int		status;
 
 	cmd.envp = ft_list_to_str((*ls_env));
 	cmd.pid = fork();
@@ -65,7 +66,12 @@ void	ft_first_command(t_parser *parser, t_list **ls_env, int p[2])
 		commandcheck(cmd.envp, cmd.cmd2);
 		(execve(ft_strjoin(ft_checkaccess(cmd.envp, cmd.cmd2), cmd.cmd2), cmd.cmd1, cmd.envp), exit(1));
 	}
-	waitpid(cmd.pid, NULL, 0);
+	waitpid(cmd.pid, &status, 0);
+	if (WIFEXITED(status))
+		printf("%d\n", WEXITSTATUS(status));
+	else if (WIFSIGNALED(status))
+		printf("%d\n", WTERMSIG(status));
+	
 }
 
 void ft_all_commands(t_parser *parser, t_list **ls_env, int p[2])

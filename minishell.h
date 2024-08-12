@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ochemsi <ochemsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:10:07 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/28 10:10:29 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/08/08 07:25:02 by ochemsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,5 +168,10 @@ t_file_red				*create_file_red_node(t_tokens type, char *filename);
 //free
 void	free_parser(t_parser **parser);
 void	free_lexer(t_lexer **lexer);
+//heredoc.c
 
+int heredoc(t_file_red *file_red);
+int quotes_availabilty(char *str);
+char *removed_quotes(char *str);
+int check_lexer(t_lexer **lexer);
 #endif
