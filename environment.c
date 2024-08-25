@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:08:51 by amarouf           #+#    #+#             */
-/*   Updated: 2024/06/27 19:15:16 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/07/27 20:05:28 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@ void	commandcheck(char **envp, char *cmd2)
 {
 	if (ft_checkaccess(envp, cmd2) == NULL)
 	{
-		exit(write(2, "command not found!\n", 19));
+		cmd2 = cmd2 + 1;
+		write(2, cmd2, ft_strlen(cmd2));
+		(exit(write(2, ": command not found\n", 20)));
 	}
 }
 
@@ -31,7 +33,7 @@ char	*ft_findpath(char **envp)
 	{
 		if (ft_strnstr(envp[i], "PATH", 4) != NULL)
 			return ((envp[i] + 5));
-		i ++;
+		i++;
 	}
 	return (NULL);
 }
@@ -56,7 +58,7 @@ char	*ft_checkaccess(char **env, char *cmd)
 			return (free_strings(allpaths), path);
 		}
 		free(path);
-		i ++;
+		i++;
 	}
 	free_strings(allpaths);
 	return (NULL);

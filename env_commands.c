@@ -6,31 +6,25 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 02:41:11 by amarouf           #+#    #+#             */
-/*   Updated: 2024/06/27 19:15:53 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/08/16 11:11:45 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
 // env command .
-void	ft_env_command(t_list *env)
+void	ft_env_command(t_list *env, int export)
 {
 	while (env)
 	{
+		if (export)
+			printf("declare -x ");
 		printf("%s\n", env->data);
 		env = env->next;
 	}
 }
 
-// export command .
-void	ft_export_command(char **split, t_list *env)
-{
-	ft_lstadd_back(&env, ft_lstnew(split[1]));
-}
-
-
-//unset command .
+// unset command .
 void	ft_unset_command(char **split, t_list **env)
 {
 	t_list	*prev;
@@ -51,7 +45,7 @@ void	ft_unset_command(char **split, t_list **env)
 		{
 			dlt = current;
 			if (prev)
-				prev ->next = current->next;
+				prev->next = current->next;
 			else
 				(*env) = current->next;
 			current = current->next;

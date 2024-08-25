@@ -6,30 +6,20 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 06:56:06 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/06 23:09:44 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/08/19 22:03:24 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
 // pwd command .
 void	ft_pwd_command(void)
 {
-	char	buf[225];
-
-	printf("%s\n", getcwd(buf, 225));
+	char	buf[4096];
+	printf("%s\n", getcwd(buf, 4096));
 }
 
-// cd command .
-void	ft_cd_command(char **split)
-{
-	chdir(split[1]);
-}
-
-// echo command .
-
-char *ft_find_env_value(char *var_name, char **env)
+char *ft_find_env_value(char *var_name, char **env, int *is_invalid)
 {
 	int i;
 
@@ -39,83 +29,9 @@ char *ft_find_env_value(char *var_name, char **env)
 	var_name = (var_name + 1);
 	while (env[i])
 	{
-		if (!ft_memcmp((var_name), env[i], ft_strlen(var_name)))
-			return ((ft_strrchr(env[i], '=') + 1));
+		if (!ft_memcmp(var_name, env[i], ft_strlen(var_name)))
+			return ((ft_strchr(env[i], '=') + 1));
 		i ++;
 	}
-	return ("1");
-}
-
-int ft_getpid(void)
-{
-	int fd;
-	char buffer[256];
-	ssize_t bytes_read;
-	int pid;
-
-	fd = open("/proc/self/stat", O_RDONLY);
-	if (fd == -1)
-		exit(1);
-	bytes_read = read(fd, buffer, sizeof(buffer) - 1);
-	if (bytes_read == -1)
-	{
-		close(fd);
-		exit(1);
-	}
-	buffer[bytes_read] = '\0';
-	close(fd);
-	char *ptr = buffer;
-	while (*ptr != ' ' && *ptr != '\0')
-	{
-		ptr++;
-	}
-	return (pid = ft_atoi(buffer));
-}
-
-void	ft_echo_command(char **split, char **env)
-{
-	int		i;
-	int		name_end;
-	char	*var_name;
-	char	*var_value = NULL;
-	int		flag;
-	int		is_found;
-
-	flag = 0;
-	is_found = 0;
-	if (!ft_memcmp(split[1], "-n", 3))
-		flag = 1;
-	i = 0;
-	name_end = 0;
-	if ((!ft_memcmp(split[1], "$", 1)))
-		{
-			while (split[1][i] != '\0')
-			{
-				while (split[1][i] == '$' && split[1][i + 1] == '$')
-				{
-					printf("%d", ft_getpid());
-					i += 2;
-				}
-				if (split[1][i] == '$' && split[1][i + 1] == '\0')
-					(printf("$"), i ++);
-				else
-				{
-					name_end = i;
-					name_end ++;
-					while (split[1][name_end] != '$' && split[1][name_end] != '\0')
-						 name_end ++;
-					var_name = ft_substr(split[1], i, (name_end - i));
-					var_value = ft_find_env_value(var_name, env);
-					if (var_value == NULL)
-						printf("%s", var_name);
-					else
-						printf("%s", var_value);
-					i = name_end;
-				}
-			}
-		}
-	else
-		printf("%s", split[1]);
-	if (!flag)
-		printf("\n");
+	return ((*is_invalid) = 1, "1");
 }
