@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 00:57:53 by amarouf           #+#    #+#             */
-/*   Updated: 2024/08/25 16:31:05 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/08/26 15:37:15 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ int is_n(char *str)
 	int i;
 
 	i = 0;
+	if (!str || !str[0])
+		return (0);
 	if (str[0] == '-' && str[1] == 'n')
 	{
 		i ++;
@@ -111,7 +113,7 @@ void	ft_echo_command(char **command, char **env)
 	{
 		i = 0;
 		if (!command[j] || (flag && !command[2]))
-			return;
+			return free(env);
 		while (command[j][i])
 		{
 			if (command[j][i] == '$')
