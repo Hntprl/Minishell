@@ -6,7 +6,7 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/28 10:21:22 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/09/24 06:51:31 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int ft_buildins(t_parser *parser, t_list **ls_env)
 	else if (!ft_memcmp(parser->command[0], "echo", 5))
 		return (ft_echo_command(parser->command, ft_list_to_str(*ls_env)) ,1);
 	else if (!ft_memcmp(parser->command[0], "env", 4))
-		return (ft_env_command(*ls_env, 0) ,1);
+		return (ft_env_command(*ls_env) ,1);
 	else if (!ft_memcmp(parser->command[0], "unset", 6))
 		return (ft_unset_command(parser->command, ls_env) ,1);
 	else if (!ft_memcmp(parser->command[0], "export", 7))
