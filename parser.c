@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ochemsi <ochemsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 13:44:22 by ochemsi           #+#    #+#             */
-/*   Updated: 2024/07/09 01:08:48 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/10/13 19:19:37 by ochemsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,3 +173,4 @@ void print_parcer(t_parser *parser)
         parser = parser->next;
     }
 }
+

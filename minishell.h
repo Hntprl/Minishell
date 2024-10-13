@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochemsi <ochemsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:10:07 by amarouf           #+#    #+#             */
-/*   Updated: 2024/08/08 07:25:02 by ochemsi          ###   ########.fr       */
+/*   Updated: 2024/10/07 17:43:29 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,12 @@ typedef struct s_lexer
 	struct s_lexer		*prev;
 }						t_lexer;
 
+typedef struct s_export
+{
+	char	*str;
+	int		index;
+}	t_export;
+
 typedef struct s_file_red
 {
 	t_tokens			typeofFile;
@@ -103,6 +109,9 @@ char					*ft_substr(const char *s, unsigned int start,
 char					*ft_strrchr(const char *s, int c);
 char					*ft_strchr(const char *s, int c);
 void					close_fd(int fd[2]);
+int						ft_isalpha(int c);
+size_t					ft_super_strlen(const char *s, char c);
+int						ft_strcmp(const char *s1, const char *s2);
 // Lincked-list
 t_list					*ft_lstnew(char *ontent);
 char					**ft_list_to_str(t_list *env);
@@ -119,7 +128,7 @@ void					ft_command_check(t_parser *parser, t_list **ls_env);
 void					ft_pwd_command(void);
 void					ft_cd_command(char **command, t_list **ls_env);
 void					ft_echo_command(char **command, char **env);
-void					ft_env_command(t_list *env, int export);
+void					ft_env_command(t_list *env);
 void					ft_export_command(char **split, t_list **env);
 void					ft_unset_command(char **split, t_list **env);
 int						ft_buildins(t_parser *parser, t_list **ls_env);
@@ -168,10 +177,5 @@ t_file_red				*create_file_red_node(t_tokens type, char *filename);
 //free
 void	free_parser(t_parser **parser);
 void	free_lexer(t_lexer **lexer);
-//heredoc.c
 
-int heredoc(t_file_red *file_red);
-int quotes_availabilty(char *str);
-char *removed_quotes(char *str);
-int check_lexer(t_lexer **lexer);
 #endif
