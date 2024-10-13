@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ochemsi <ochemsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:08:51 by amarouf           #+#    #+#             */
-/*   Updated: 2024/07/27 20:05:28 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/10/13 20:39:55 by ochemsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	commandcheck(char **envp, char *cmd2)
 	{
 		cmd2 = cmd2 + 1;
 		write(2, cmd2, ft_strlen(cmd2));
-		(exit(write(2, ": command not found\n", 20)));
+		write(2, ": command not found\n", 20);
+		return;
 	}
 }
 

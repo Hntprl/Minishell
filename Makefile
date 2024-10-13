@@ -6,7 +6,7 @@ CC = cc
 
 SRC = commands.c environment.c lincked_list.c env_commands.c \
 	libft_funcs.c free.c lincked_list_clear.c minishell.c split.c \
-	commands/cd.c commands/echo.c \
+	commands/cd.c commands/echo.c parsing.c parsing_helper.c \
 	parser.c lexer.c helper.c pipe.c commands/export.c \
 
 OSRC = $(SRC:.c=.o)

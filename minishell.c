@@ -6,7 +6,7 @@
 /*   By: ochemsi <ochemsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/10/13 20:34:54 by ochemsi          ###   ########.fr       */
+/*   Updated: 2024/10/14 00:14:42 by ochemsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,154 +187,24 @@ void ft_command_check(t_parser *parser, t_list **ls_env)
 }
 
 
-// Read from 0 ...
-int check_quotes(const char *str)
-{
-	bool in_double_quote = false;
-	bool in_single_quote = false;
-	int i = 0;
-
-	while (str[i])
-	{
-		if (str[i] == '"' && !in_single_quote)
-			in_double_quote = !in_double_quote;
-		else if (str[i] == '\'' && !in_double_quote)
-			in_single_quote = !in_single_quote;
-		i++;
-	}
-	if (in_double_quote || in_single_quote)
-		return 0;
-	return 1;
-}
-
-int check_words(t_lexer *lexer)
-{
-	if(!lexer)
-		return 1;
-	t_lexer *current;
-
-	current = lexer;
-	while (current)
-	{
-		if (current->token == WORD)
-		{
-			if (check_quotes(current->str) == 0)
-			{
-				return (0);
-			}
-		}
-		current = current->next;
-	}
-	return (1);
-}
-char *remove_quotes(char *str)
-{
-	int in_single_quote = 0;
-	int in_double_quote = 0;
-	char *str2;
-	str2 = malloc(sizeof(char) * (ft_strlen(str) + 1));
-	int i, j;
-	i = 0;
-	j = 0;
-	while (str[i])
-	{
-		if (str[i] == '\'' && in_double_quote == 0)
-			in_single_quote = !in_single_quote;
-		else if (str[i] == '"' && in_single_quote == 0)
-			in_double_quote = !in_double_quote;
-		else
-		{
-			str2[j] = str[i];
-			j++;
-		}
-		i++;
-	}
-	return (str2);
-}
-
-int check_lexer(t_lexer **lexer)
-{
-	if (lexer == NULL || *lexer == NULL)
-		return (-1);
-	t_lexer *tmp;
-	tmp = *lexer;
-	int count_word = 0;
-	int ok = 0;
-	t_tokens this_token;
-	while (tmp)
-	{
-
-		if (tmp->next && tmp->next->token != WORD && tmp->token != WORD)
-		{
-			this_token = tmp->token;
-			if (tmp->next->token && tmp->next->token == this_token)
-				return (0);
-		}
-
-		if (tmp->token == PIPE || tmp->token == REDIRECTION_APPEND || tmp->token == REDIRECTION_IN || tmp->token == REDIRECTION_OUT || tmp->token == HEREDOC)
-			ok++;
-
-		if (tmp->token == WORD)
-			count_word++;
-		tmp = tmp->next;
-	}
-	if (ok >= 1 && count_word == 0)
-		return (0);
-	return (1);
-}
-
-// Read from 0 ...
 void minishell(t_list *ls_env)
 {
-	t_lexer *lexer;
-	t_parser *parser;
-	char *rd_history;
-	char *prompt;
+    t_lexer *lexer = NULL;
+    t_parser *parser = NULL;
+    char *prompt = BOLD RED "Mini" YELLOW "shell" RED ">" RESET;
+    char *rd_history = readline(prompt);
 
-	lexer = NULL;
-	parser = NULL;
-	prompt = BOLD RED "Mini" YELLOW "shell" RED ">" RESET;
-	rd_history = readline(prompt);
-	while (rd_history)
-	{
-		if (rd_history[0])
-		{
-			add_history(rd_history);
-			tokenize_input(&lexer, rd_history);
-			if(!lexer)
-			{
-				rd_history = readline(prompt);
-				continue;
-			}
-			print_tokens(lexer);
-			if (check_words(lexer) == 0)
-			{
-				write(1, "Syntax error: unclosed quote\n", 30);
-				free_lexer(&lexer);
-				rd_history = readline(prompt);
-				continue;
-			}
-			if (check_lexer(&lexer) == 0)
-			{
-				write(1, "Syntax error\n", 13);
-				free_lexer(&lexer);
-				rd_history = readline(prompt);
-				continue;
-			}
-			fill_parser(lexer, &parser);
-			ft_command_check(parser, &ls_env);
-			free_lexer(&lexer);
-			free_parser(&parser);
-		}
-		rd_history = readline(prompt);
-	}
-	write(1, "exit\n", 5);
-	rl_clear_history();
-	ft_lstclear(&ls_env);
-	exit(0);
+    while (rd_history)
+    {
+        if (rd_history[0])
+            process_input(&lexer, &parser, rd_history, &ls_env);
+        rd_history = readline(prompt);
+    }
+    write(1, "exit\n", 5);
+    rl_clear_history();
+    ft_lstclear(&ls_env);
+    exit(0);
 }
-
-
 
 
 ////////////////////////////////////////////////////////////////////////////////////////
