@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ochemsi <ochemsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/09/24 06:51:31 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/10/13 19:23:43 by ochemsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,7 @@ void ft_command_check(t_parser *parser, t_list **ls_env)
 		ft_multiple_commands(parser, ls_env);
 }
 
+
 // Read from 0 ...
 int check_quotes(const char *str)
 {
@@ -221,6 +222,61 @@ int check_words(t_lexer *lexer)
 	}
 	return (1);
 }
+char *remove_quotes(char *str)
+{
+	int in_single_quote = 0;
+	int in_double_quote = 0;
+	char *str2;
+	str2 = malloc(sizeof(char) * (ft_strlen(str) + 1));
+	int i, j;
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if (str[i] == '\'' && in_double_quote == 0)
+			in_single_quote = !in_single_quote;
+		else if (str[i] == '"' && in_single_quote == 0)
+			in_double_quote = !in_double_quote;
+		else
+		{
+			str2[j] = str[i];
+			j++;
+		}
+		i++;
+	}
+	return (str2);
+}
+
+int check_lexer(t_lexer **lexer)
+{
+	if (lexer == NULL || *lexer == NULL)
+		return (0);
+	t_lexer *tmp;
+	tmp = *lexer;
+	int count_word = 0;
+	int ok = 0;
+	t_tokens this_token;
+	while (tmp)
+	{
+
+		if (tmp->next && tmp->next->token != WORD && tmp->token != WORD)
+		{
+			this_token = tmp->token;
+			if (tmp->next->token && tmp->next->token == this_token)
+				return (0);
+		}
+
+		if (tmp->token == PIPE || tmp->token == REDIRECTION_APPEND || tmp->token == REDIRECTION_IN || tmp->token == REDIRECTION_OUT || tmp->token == HEREDOC)
+			ok++;
+
+		if (tmp->token == WORD)
+			count_word++;
+		tmp = tmp->next;
+	}
+	if (ok >= 1 && count_word == 0)
+		return (0);
+	return (1);
+}
 
 // Read from 0 ...
 void minishell(t_list *ls_env)
@@ -243,6 +299,13 @@ void minishell(t_list *ls_env)
 			if (check_words(lexer) == 0)
 			{
 				write(1, "Syntax error: unclosed quote\n", 30);
+				free_lexer(&lexer);
+				rd_history = readline(prompt);
+				continue;
+			}
+			if (check_lexer(&lexer) == 0)
+			{
+				write(1, "Syntax error\n", 13);
 				free_lexer(&lexer);
 				rd_history = readline(prompt);
 				continue;
