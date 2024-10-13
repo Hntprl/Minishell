@@ -6,7 +6,7 @@
 /*   By: ochemsi <ochemsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/10/13 19:23:43 by ochemsi          ###   ########.fr       */
+/*   Updated: 2024/10/13 20:34:54 by ochemsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,9 @@ void ft_multiple_commands(t_parser *parser,t_list **ls_env)
 // Commands :) .
 void ft_command_check(t_parser *parser, t_list **ls_env)
 {
+	if (!parser)
+		return;
+
 	
 	if (ft_parsersize(parser) == 1)
 		ft_single_command(parser, ls_env);
@@ -206,6 +209,8 @@ int check_quotes(const char *str)
 
 int check_words(t_lexer *lexer)
 {
+	if(!lexer)
+		return 1;
 	t_lexer *current;
 
 	current = lexer;
@@ -250,7 +255,7 @@ char *remove_quotes(char *str)
 int check_lexer(t_lexer **lexer)
 {
 	if (lexer == NULL || *lexer == NULL)
-		return (0);
+		return (-1);
 	t_lexer *tmp;
 	tmp = *lexer;
 	int count_word = 0;
@@ -296,6 +301,12 @@ void minishell(t_list *ls_env)
 		{
 			add_history(rd_history);
 			tokenize_input(&lexer, rd_history);
+			if(!lexer)
+			{
+				rd_history = readline(prompt);
+				continue;
+			}
+			print_tokens(lexer);
 			if (check_words(lexer) == 0)
 			{
 				write(1, "Syntax error: unclosed quote\n", 30);
@@ -322,6 +333,9 @@ void minishell(t_list *ls_env)
 	ft_lstclear(&ls_env);
 	exit(0);
 }
+
+
+
 
 ////////////////////////////////////////////////////////////////////////////////////////
 
