@@ -21,6 +21,8 @@ void shell_commands(char **split, t_list *env)
 	char **envp;
 	char *jn = NULL;
 
+	if (ft_lstsize(env) == 3)
+		ft_lstadd_back(&env, ft_lstnew(""));
 	pid = fork();
 	if (pid == -1)
 		(write(1, "Error:Fork!", 11), exit(1));
@@ -67,7 +69,7 @@ int ft_buildins(t_parser *parser, t_list **ls_env)
 	else if (!ft_memcmp(parser->command[0], "export", 7))
 		return (ft_export_command(parser->command, ls_env) ,1);
 	else if (!ft_memcmp(parser->command[0], "exit", 5))
-		return ((write(1, "exit!\n", 6), exit(0)) ,1);
+		return ((write(1, "exit\n", 5), exit(0)) ,1);
 	else
 		return (0);
 }

@@ -64,6 +64,22 @@ char	*ft_checkaccess(char **env, char *cmd)
 	return (NULL);
 }
 
+t_list *mini_env(void)
+{
+	t_list *lst;
+	char	buf[4096];
+	char	*tmp;
+
+	lst = NULL;
+	getcwd(buf, 4096);
+	tmp = ft_strjoin("PWD=", buf);
+	ft_lstadd_back(&lst, ft_lstnew(tmp));
+	free(tmp);
+	ft_lstadd_back(&lst, ft_lstnew("SHLVL=1"));
+	ft_lstadd_back(&lst, ft_lstnew("_=/usr/bin/env"));
+	return (lst);
+}
+
 // kat7t l Envp f lincked list .
 t_list	*fill_envp(char **env)
 {
@@ -72,7 +88,12 @@ t_list	*fill_envp(char **env)
 
 	lst = NULL;
 	i = -1;
-	while (env[++i])
-		ft_lstadd_back(&lst, ft_lstnew(env[i]));
+	if (!env[0])
+		lst = mini_env();
+	else
+	{
+		while (env[++i])
+			ft_lstadd_back(&lst, ft_lstnew(env[i]));
+	}
 	return (lst);
 }
