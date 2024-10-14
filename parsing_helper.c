@@ -6,7 +6,7 @@
 /*   By: ochemsi <ochemsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 00:15:31 by ochemsi           #+#    #+#             */
-/*   Updated: 2024/10/14 00:16:27 by ochemsi          ###   ########.fr       */
+/*   Updated: 2024/10/14 02:14:57 by ochemsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,11 @@ char	*remove_quotes(char *str)
 		else if (str[i] == '"' && in_single_quote == 0)
 			in_double_quote = !in_double_quote;
 		else
-		{
-			str2[j] = str[i];
-			j++;
-		}
+			str2[j++] = str[i];
 		i++;
 	}
+	str2[j] = '\0';
 	return (str2);
 }
+
+

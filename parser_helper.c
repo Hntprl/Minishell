@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   paser_helper.c                                     :+:      :+:    :+:   */
+/*   parser_helper.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ochemsi <ochemsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 01:07:53 by ochemsi           #+#    #+#             */
-/*   Updated: 2024/10/14 01:10:01 by ochemsi          ###   ########.fr       */
+/*   Updated: 2024/10/14 01:57:04 by ochemsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,9 @@ void	process_tokens_parser(t_lexer *lexer, t_parser **parser)
 	while (current)
 	{
 		if (current->token == PIPE)
-		{
 			handle_pipe_token(&current_parser);
-		}
 		else if (current->token == WORD)
-		{
 			handle_word_token(current, &current_parser);
-		}
 		current = current->next;
 	}
 }
