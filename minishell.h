@@ -125,7 +125,7 @@ void					ft_cd_command(char **command, t_list **ls_env);
 void					ft_echo_command(char **command, char **env);
 void					ft_env_command(t_list *env);
 void					ft_export_command(char **split, t_list **env);
-void					ft_unset_command(char **split, t_list **env);
+void					ft_unset_command(char *split, t_list **env);
 int						ft_buildins(t_parser *parser, t_list **ls_env);
 // Environment
 void					commandcheck(char **envp, char *cmd2);

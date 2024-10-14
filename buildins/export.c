@@ -6,18 +6,11 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 11:11:15 by amarouf           #+#    #+#             */
-/*   Updated: 2024/10/07 18:02:11 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/10/14 16:33:19 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	ft_isalpha(int c)
-{
-	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-		return (1);
-	return (0);
-}
 
 int	double_export(char *var_name, char **env)
 {
@@ -109,7 +102,7 @@ void	ft_export_command(char **split, t_list **env)
 		return ;
 	if (double_export(split[1], ft_list_to_str(*(env))))
 	{
-		ft_unset_command(split, env);
+		ft_unset_command(split[1], env);
 	}
 	ft_lstadd_back(env, ft_lstnew(split[1]));
 }

@@ -3,36 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochemsi <ochemsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 00:57:53 by amarouf           #+#    #+#             */
-/*   Updated: 2024/10/14 00:59:40 by ochemsi          ###   ########.fr       */
+/*   Updated: 2024/10/14 17:11:06 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	ft_getpid(void)
-{
-	int		fd;
-	char	buffer[256];
-	ssize_t	bytes_read;
-	int		pid;
-	char	*ptr;
-
-	fd = open("/proc/self/stat", O_RDONLY);
-	if (fd == -1)
-		exit(1);
-	bytes_read = read(fd, buffer, sizeof(buffer) - 1);
-	if (bytes_read == -1)
-		(close(fd), exit(1));
-	buffer[bytes_read] = '\0';
-	close(fd);
-	ptr = buffer;
-	while (*ptr != ' ' && *ptr != '\0')
-		ptr++;
-	return (pid = ft_atoi(buffer));
-}
 
 int	echo_print_variables(char *command, int i, char **env)
 {
@@ -100,6 +78,19 @@ int	print_variables(char **command, int j, int i, char **env)
 	return (i);
 }
 
+int	ft_echo(int i, char **command, int j, char **env)
+{
+	if (command[j][i] == '$')
+		i = print_variables(command, j, i, env);
+	else
+	{
+		if (!is_n(command[j]))
+			printf("%c", command[j][i]);
+		i++;
+	}
+	return (i);
+}
+
 void	ft_echo_command(char **command, char **env)
 {
 	int	i;
@@ -116,16 +107,7 @@ void	ft_echo_command(char **command, char **env)
 		if (!command[j] || (flag && !command[2]))
 			return (free(env));
 		while (command[j][i])
-		{
-			if (command[j][i] == '$')
-				i = print_variables(command, j, i, env);
-			else
-			{
-				if (!is_n(command[j]))
-					printf("%c", command[j][i]);
-				i++;
-			}
-		}
+			i = ft_echo(i, command, j, env);
 		if (command[j + 1] && !is_n(command[j]))
 			printf(" ");
 		j++;

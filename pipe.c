@@ -6,11 +6,25 @@
 /*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 18:55:43 by abdellah          #+#    #+#             */
-/*   Updated: 2024/08/16 11:47:25 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/10/14 17:02:59 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	dup_in_out(int p[2], int in, int fd, int pipe)
+{
+	if (pipe == 1)
+	{
+		if (in != 1 && fd != -1337)
+			dup2(p[1], 1);
+	}
+	else
+	{
+		if (in != 0 && fd != -1337)
+			dup2(p[0], 0);
+	}
+}
 
 void	ft_pipe_redirections(t_parser *parser, int p[2], int pipe)
 {
@@ -37,16 +51,7 @@ void	ft_pipe_redirections(t_parser *parser, int p[2], int pipe)
 		in = ft_redirection(parser->red, fd);
 		parser->red = parser->red->next;
 	}
-	if (pipe == 1)
-	{
-		if (in != 1 && fd != -1337)
-			dup2(p[1], 1);
-	}
-	else
-	{
-		if (in != 0 && fd != -1337)
-			dup2(p[0], 0);
-	}
+	dup_in_out(p, in, fd, pipe);
 	close_fd(p);
 }
 

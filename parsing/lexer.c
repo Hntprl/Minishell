@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochemsi <ochemsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 10:50:57 by ochemsi           #+#    #+#             */
-/*   Updated: 2024/10/14 01:24:17 by ochemsi          ###   ########.fr       */
+/*   Updated: 2024/10/14 16:32:15 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 t_lexer	*create_lexer_token(char *str, t_tokens token)
 {

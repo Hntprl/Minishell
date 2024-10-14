@@ -3,57 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochemsi <ochemsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 20:09:26 by amarouf           #+#    #+#             */
-/*   Updated: 2024/10/14 00:14:42 by ochemsi          ###   ########.fr       */
+/*   Updated: 2024/10/14 17:11:14 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Execute shell commands (ls , grep ....) .
-void	shell_commands(char **split, t_list *env)
+int	ft_getpid(void)
 {
-	char	*path;
-	char	*cmd;
+	int		fd;
+	char	buffer[256];
+	ssize_t	bytes_read;
 	int		pid;
-	char	**envp;
-	char	*jn;
+	char	*ptr;
 
-	jn = NULL;
-	if (ft_lstsize(env) == 3)
-		ft_lstadd_back(&env, ft_lstnew(""));
-	pid = fork();
-	if (pid == -1)
-		(write(1, "Error:Fork!", 11), exit(1));
-	if (pid == 0)
-	{
-		envp = ft_list_to_str(env);
-		cmd = ft_strjoin("/", split[0]);
-		path = ft_checkaccess(envp, cmd);
-		jn = ft_strjoin(path, cmd);
-		(commandcheck(envp, cmd), execve(jn, split, envp));
-	}
-	wait(&pid);
-}
-
-int	ft_redirection(t_file_red *red, int fd)
-{
-	if (red->typeoffile == REDIRECTION_OUT
-		|| red->typeoffile == REDIRECTION_APPEND)
-	{
-		dup2(fd, 1);
-		close(fd);
-		return (1);
-	}
-	else if (red->typeoffile == REDIRECTION_IN)
-	{
-		dup2(fd, 0);
-		close(fd);
-		return (0);
-	}
-	return (-99);
+	fd = open("/proc/self/stat", O_RDONLY);
+	if (fd == -1)
+		exit(1);
+	bytes_read = read(fd, buffer, sizeof(buffer) - 1);
+	if (bytes_read == -1)
+		(close(fd), exit(1));
+	buffer[bytes_read] = '\0';
+	close(fd);
+	ptr = buffer;
+	while (*ptr != ' ' && *ptr != '\0')
+		ptr++;
+	return (pid = ft_atoi(buffer));
 }
 
 int	ft_buildins(t_parser *parser, t_list **ls_env)
@@ -67,130 +45,13 @@ int	ft_buildins(t_parser *parser, t_list **ls_env)
 	else if (!ft_memcmp(parser->command[0], "env", 4))
 		return (ft_env_command(*ls_env), 1);
 	else if (!ft_memcmp(parser->command[0], "unset", 6))
-		return (ft_unset_command(parser->command, ls_env), 1);
+		return (ft_unset_command(parser->command[1], ls_env), 1);
 	else if (!ft_memcmp(parser->command[0], "export", 7))
 		return (ft_export_command(parser->command, ls_env), 1);
 	else if (!ft_memcmp(parser->command[0], "exit", 5))
 		return ((write(1, "exit\n", 5), exit(0)), 1);
 	else
 		return (0);
-}
-
-int	open_files(t_parser *parser, int std_in)
-{
-	int	fd;
-
-	fd = 0;
-	while (parser->red->next
-		&& parser->red->typeoffile == parser->red->next->typeoffile)
-	{
-		if (parser->red->typeoffile == REDIRECTION_IN)
-		{
-			if (access(parser->red->filename, F_OK))
-			{
-				write(std_in, parser->red->filename,
-					ft_strlen(parser->red->filename));
-				write(std_in, ": No such file or directory\n", 29);
-				return (-1337);
-			}
-		}
-		fd = open(parser->red->filename, O_CREAT | O_RDWR, 0644);
-		close(fd);
-		parser->red = parser->red->next;
-	}
-	if (parser->red->typeoffile == REDIRECTION_APPEND)
-		fd = open(parser->red->filename, O_RDWR | O_CREAT | O_APPEND, 0644);
-	else if (parser->red->typeoffile == REDIRECTION_IN)
-	{
-		if (access(parser->red->filename, F_OK))
-		{
-			write(std_in, parser->red->filename,
-				ft_strlen(parser->red->filename));
-			write(std_in, ": No such file or directory\n", 29);
-			return (-1337);
-		}
-		fd = open(parser->red->filename, O_RDWR, 0644);
-	}
-	else
-		fd = open(parser->red->filename, O_CREAT | O_TRUNC | O_RDWR, 0644);
-	return (fd);
-}
-
-void	ft_single_command(t_parser *parser, t_list **ls_env)
-{
-	int	fd;
-	int	std_in;
-	int	std_out;
-
-	fd = 1;
-	std_in = 0;
-	std_out = 1;
-	std_in = dup(0);
-	std_out = dup(1);
-	while (parser->red)
-	{
-		fd = open_files(parser, std_in);
-		if (fd == -1337)
-			return ;
-		ft_redirection(parser->red, fd);
-		parser->red = parser->red->next;
-	}
-	if (ft_buildins(parser, ls_env))
-	{
-		(dup2(std_out, 1), close(std_out));
-		(dup2(std_in, 0), close(std_in));
-		return ;
-	}
-	else
-		shell_commands(parser->command, (*ls_env));
-	(dup2(std_out, 1), close(std_out));
-	(dup2(std_in, 0), close(std_in));
-}
-
-void	ft_multiple_commands(t_parser *parser, t_list **ls_env)
-{
-	int	input;
-	int	p[2];
-	int	std_in;
-	int	std_out;
-
-	std_in = dup(0);
-	std_out = dup(1);
-	pipe(p);
-	ft_first_command(parser, ls_env, p);
-	close(p[1]);
-	parser = parser->next;
-	input = p[0];
-	if (ft_parsersize(parser) > 1)
-	{
-		while (parser->next)
-		{
-			dup2(input, 0);
-			close(input);
-			pipe(p);
-			ft_all_commands(parser, ls_env, p);
-			(close(p[1]), input = p[0]);
-			parser = parser->next;
-		}
-	}
-	ft_last_command(parser, ls_env, p);
-	close(input);
-	close_fd(p);
-	while (wait(NULL) > 0)
-		;
-	(dup2(std_out, 1), close(std_out));
-	(dup2(std_in, 0), close(std_in));
-}
-
-// Commands :) .
-void	ft_command_check(t_parser *parser, t_list **ls_env)
-{
-	if (!parser)
-		return ;
-	if (ft_parsersize(parser) == 1)
-		ft_single_command(parser, ls_env);
-	else
-		ft_multiple_commands(parser, ls_env);
 }
 
 void	minishell(t_list *ls_env)
@@ -211,12 +72,10 @@ void	minishell(t_list *ls_env)
 		rd_history = readline(prompt);
 	}
 	write(1, "exit\n", 5);
-	rl_clear_history();
+	// rl_clear_history();
 	ft_lstclear(&ls_env);
 	exit(0);
 }
-
-////////////////////////////////////////////////////////////////////////////////////////
 
 // main function
 int	main(int ac, char **av, char **env)

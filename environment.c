@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochemsi <ochemsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 09:08:51 by amarouf           #+#    #+#             */
-/*   Updated: 2024/10/13 20:39:55 by ochemsi          ###   ########.fr       */
+/*   Updated: 2024/10/14 16:51:31 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,11 @@ t_list	*mini_env(void)
 // kat7t l Envp f lincked list .
 t_list	*fill_envp(char **env)
 {
+	int		count;
 	int		i;
 	t_list	*lst;
 
+	count = 0;
 	lst = NULL;
 	i = -1;
 	if (!env[0])

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochemsi <ochemsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 13:44:22 by ochemsi           #+#    #+#             */
-/*   Updated: 2024/10/14 01:55:33 by ochemsi          ###   ########.fr       */
+/*   Updated: 2024/10/14 16:33:42 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 // Function to count the number of commands
 int	count_commands(t_lexer *lexer)
@@ -89,4 +89,3 @@ void	fill_parser(t_lexer *lexer, t_parser **parser)
 		*parser = create_parser_node();
 	process_tokens_parser(lexer, parser);
 }
-

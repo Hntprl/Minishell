@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_helper.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochemsi <ochemsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 00:15:31 by ochemsi           #+#    #+#             */
-/*   Updated: 2024/10/14 02:14:57 by ochemsi          ###   ########.fr       */
+/*   Updated: 2024/10/14 16:33:50 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 // Function to create a new parser node
 t_parser	*create_parser_node(void)
@@ -109,5 +109,3 @@ char	*remove_quotes(char *str)
 	str2[j] = '\0';
 	return (str2);
 }
-
-

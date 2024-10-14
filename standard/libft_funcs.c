@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   libft_funcs.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochemsi <ochemsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 00:28:55 by amarouf           #+#    #+#             */
-/*   Updated: 2024/10/14 00:51:37 by ochemsi          ###   ########.fr       */
+/*   Updated: 2024/10/14 16:33:29 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 size_t	ft_strlen(const char *s)
 {
@@ -76,4 +76,11 @@ char	*ft_strdup(const char *s1)
 	}
 	p[i] = '\0';
 	return (p);
+}
+
+int	ft_isalpha(int c)
+{
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+		return (1);
+	return (0);
 }

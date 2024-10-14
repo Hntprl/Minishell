@@ -41,7 +41,7 @@ int	heredoc(t_file_red *file_red)
 	{
 		tmp = readline("> ");
 		flag = quotes_availabilty(tmp);
-		tmp2 = removed_quotes(file_red->filename);
+		tmp2 = remove_quotes(file_red->filename);
 		if (!ft_memcmp(tmp, tmp2, ft_strlen(file_red->filename)))
 			break ;
 		write(fd, tmp, ft_strlen(tmp));

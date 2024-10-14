@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_helper.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ochemsi <ochemsi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 01:15:19 by ochemsi           #+#    #+#             */
-/*   Updated: 2024/10/14 01:23:42 by ochemsi          ###   ########.fr       */
+/*   Updated: 2024/10/14 16:32:11 by amarouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	lexer_handle_pipe_token(t_lexer **head, int *i)
 {
