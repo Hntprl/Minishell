@@ -108,50 +108,49 @@ void	add_token_to_collection(t_lexer **head, t_lexer *new_token)
 // 	free(rd_history);
 // }
 
-
-void lexer_handle_word_token(t_lexer **head, char *rd_history, int *i)
+void	lexer_handle_word_token(t_lexer **head, char *rd_history, int *i)
 {
-    int j = *i;
-    char *word;
+	int		j;
+	char	*word;
 
-    while (rd_history[j] != '\0' && rd_history[j] != ' '
-        && rd_history[j] != '\t' && rd_history[j] != '|'
-        && ft_strncmp(&rd_history[j], ">>", 2) != 0
-        && rd_history[j] != '<' && rd_history[j] != '>'
-        && ft_strncmp(&rd_history[j], "<<", 2) != 0)
-        j++;
-    if (j > *i)
-    {
-        word = ft_substr(&rd_history[*i], 0, j - *i);
-        add_token_to_collection(head, create_lexer_token(word, WORD));
-        free(word);
-        *i = j;
-    }
-    (*i)++;
+	j = *i;
+	while (rd_history[j] != '\0' && rd_history[j] != ' '
+		&& rd_history[j] != '\t' && rd_history[j] != '|'
+		&& ft_strncmp(&rd_history[j], ">>", 2) != 0 && rd_history[j] != '<'
+		&& rd_history[j] != '>' && ft_strncmp(&rd_history[j], "<<", 2) != 0)
+		j++;
+	if (j > *i)
+	{
+		word = ft_substr(&rd_history[*i], 0, j - *i);
+		add_token_to_collection(head, create_lexer_token(word, WORD));
+		free(word);
+		*i = j;
+	}
+	(*i)++;
 }
 
-void tokenize_input(t_lexer **head, char *rd_history)
+void	tokenize_input(t_lexer **head, char *rd_history)
 {
-	    int i = 0;
+	int	i;
 
-    while (rd_history && rd_history[i])
-    {
-        if (rd_history[i] == '|')
-            lexer_handle_pipe_token(head, &i);
-        else if (ft_strncmp(&rd_history[i], ">>", 2) == 0)
-            lexer_handle_redirection_append_token(head, &i);
-        else if (rd_history[i] == '<' && rd_history[i + 1] != '<')
-            lexer_handle_redirection_in_token(head, &i);
-        else if (rd_history[i] == '>' && rd_history[i + 1] != '>')
-            lexer_handle_redirection_out_token(head, &i);
-        else if (ft_strncmp(&rd_history[i], "<<", 2) == 0)
-            lexer_handle_heredoc_token(head, &i);
-        else
-            lexer_handle_word_token(head, rd_history, &i);
-    }
-    free(rd_history);
+	i = 0;
+	while (rd_history && rd_history[i])
+	{
+		if (rd_history[i] == '|')
+			lexer_handle_pipe_token(head, &i);
+		else if (ft_strncmp(&rd_history[i], ">>", 2) == 0)
+			lexer_handle_redirection_append_token(head, &i);
+		else if (rd_history[i] == '<' && rd_history[i + 1] != '<')
+			lexer_handle_redirection_in_token(head, &i);
+		else if (rd_history[i] == '>' && rd_history[i + 1] != '>')
+			lexer_handle_redirection_out_token(head, &i);
+		else if (ft_strncmp(&rd_history[i], "<<", 2) == 0)
+			lexer_handle_heredoc_token(head, &i);
+		else
+			lexer_handle_word_token(head, rd_history, &i);
+	}
+	free(rd_history);
 }
-
 
 // void	print_tokens(t_lexer *head)
 // {

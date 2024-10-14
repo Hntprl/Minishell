@@ -120,14 +120,13 @@ void	add_file_red(t_parser **parser, t_tokens type, char *filename)
 // 	}
 // }
 
-void fill_parser(t_lexer *lexer, t_parser **parser)
+void	fill_parser(t_lexer *lexer, t_parser **parser)
 {
-    if (!lexer)
-        return;
-    if (!*parser)
-        *parser = create_parser_node();
-
-    process_tokens_parser(lexer, parser);
+	if (!lexer)
+		return ;
+	if (!*parser)
+		*parser = create_parser_node();
+	process_tokens_parser(lexer, parser);
 }
 
 // void	print_parcer(t_parser *parser)
