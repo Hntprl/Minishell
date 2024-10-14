@@ -27,13 +27,15 @@ void	free_lexer(t_lexer **lexer)
 
 void	free_parser(t_parser **parser)
 {
-	t_parser *tmp;
+	t_parser	*tmp;
+	int			i;
+	t_file_red	*tmp2;
 
 	while (*parser)
 	{
 		tmp = *parser;
 		*parser = (*parser)->next;
-		int i = 0;
+		i = 0;
 		while (tmp->command[i])
 		{
 			free(tmp->command[i]);
@@ -42,7 +44,7 @@ void	free_parser(t_parser **parser)
 		free(tmp->command);
 		while (tmp->red)
 		{
-			t_file_red *tmp2 = tmp->red;
+			tmp2 = tmp->red;
 			tmp->red = tmp->red->next;
 			free(tmp2->filename);
 			free(tmp2);

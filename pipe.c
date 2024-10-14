@@ -12,12 +12,15 @@
 
 #include "minishell.h"
 
-void ft_pipe_redirections(t_parser *parser, int p[2], int pipe)
+void	ft_pipe_redirections(t_parser *parser, int p[2], int pipe)
 {
-	int fd = 1;
-	int in = dup(0);
-	int std_in = in;
+	int	fd;
+	int	in;
+	int	std_in;
 
+	fd = 1;
+	in = dup(0);
+	std_in = in;
 	while (parser->red)
 	{
 		fd = open_files(parser, std_in);
@@ -26,9 +29,9 @@ void ft_pipe_redirections(t_parser *parser, int p[2], int pipe)
 			if (in != 1)
 				exit(1);
 			else
-			{	
+			{
 				dup2(in, 0);
-				break;
+				break ;
 			}
 		}
 		in = ft_redirection(parser->red, fd);
@@ -49,8 +52,8 @@ void ft_pipe_redirections(t_parser *parser, int p[2], int pipe)
 
 void	ft_first_command(t_parser *parser, t_list **ls_env, int p[2])
 {
-	t_cmd cmd;
-	char *jn;
+	t_cmd	cmd;
+	char	*jn;
 
 	cmd.envp = ft_list_to_str((*ls_env));
 	cmd.pid = fork();
@@ -71,9 +74,9 @@ void	ft_first_command(t_parser *parser, t_list **ls_env, int p[2])
 	waitpid(cmd.pid, NULL, 0);
 }
 
-void ft_all_commands(t_parser *parser, t_list **ls_env, int p[2])
+void	ft_all_commands(t_parser *parser, t_list **ls_env, int p[2])
 {
-	t_cmd cmd;
+	t_cmd	cmd;
 
 	cmd.envp = ft_list_to_str((*ls_env));
 	cmd.pid = fork();
@@ -85,14 +88,15 @@ void ft_all_commands(t_parser *parser, t_list **ls_env, int p[2])
 		cmd.cmd1 = parser->command;
 		cmd.cmd2 = ft_strjoin("/", cmd.cmd1[0]);
 		commandcheck(cmd.envp, cmd.cmd2);
-		(execve(ft_strjoin(ft_checkaccess(cmd.envp, cmd.cmd2), cmd.cmd2), cmd.cmd1, cmd.envp), exit(1));
+		(execve(ft_strjoin(ft_checkaccess(cmd.envp, cmd.cmd2), cmd.cmd2),
+				cmd.cmd1, cmd.envp), exit(1));
 	}
 	free(cmd.envp);
 }
 
-void ft_last_command(t_parser *parser, t_list **ls_env, int p[2])
+void	ft_last_command(t_parser *parser, t_list **ls_env, int p[2])
 {
-	t_cmd cmd;
+	t_cmd	cmd;
 
 	cmd.envp = ft_list_to_str((*ls_env));
 	cmd.pid = fork();
@@ -106,7 +110,8 @@ void ft_last_command(t_parser *parser, t_list **ls_env, int p[2])
 			exit(1);
 		cmd.cmd2 = ft_strjoin("/", cmd.cmd1[0]);
 		commandcheck(cmd.envp, cmd.cmd2);
-		execve(ft_strjoin(ft_checkaccess(cmd.envp, cmd.cmd2), cmd.cmd2), cmd.cmd1, cmd.envp);
+		execve(ft_strjoin(ft_checkaccess(cmd.envp, cmd.cmd2), cmd.cmd2),
+			cmd.cmd1, cmd.envp);
 		exit(1);
 	}
 	free(cmd.envp);

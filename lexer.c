@@ -6,15 +6,15 @@
 /*   By: ochemsi <ochemsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 10:50:57 by ochemsi           #+#    #+#             */
-/*   Updated: 2024/10/13 19:19:53 by ochemsi          ###   ########.fr       */
+/*   Updated: 2024/10/14 00:53:29 by ochemsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_lexer *create_lexer_token(char *str, t_tokens token)
+t_lexer	*create_lexer_token(char *str, t_tokens token)
 {
-	t_lexer *new_token;
+	t_lexer	*new_token;
 
 	new_token = (t_lexer *)malloc(sizeof(t_lexer));
 	if (!new_token)
@@ -32,14 +32,14 @@ t_lexer *create_lexer_token(char *str, t_tokens token)
 	return (new_token);
 }
 
-void add_token_to_collection(t_lexer **head, t_lexer *new_token)
+void	add_token_to_collection(t_lexer **head, t_lexer *new_token)
 {
-	t_lexer *current;
+	t_lexer	*current;
 
 	if (!*head)
 	{
 		*head = new_token;
-		return;
+		return ;
 	}
 	current = *head;
 	while (current->next)
@@ -48,12 +48,13 @@ void add_token_to_collection(t_lexer **head, t_lexer *new_token)
 	current->next = new_token;
 	new_token->prev = current;
 }
-void tokenize_input(t_lexer **head, char *rd_history)
+void	tokenize_input(t_lexer **head, char *rd_history)
 {
-	int i = 0;
-	int j;
-	char *word;
+	int		i;
+	int		j;
+	char	*word;
 
+	i = 0;
 	while (rd_history && rd_history[i])
 	{
 		if (rd_history[i] == '|')
@@ -63,17 +64,20 @@ void tokenize_input(t_lexer **head, char *rd_history)
 		}
 		else if (ft_strncmp(&rd_history[i], ">>", 2) == 0)
 		{
-			add_token_to_collection(head, create_lexer_token(">>", REDIRECTION_APPEND));
+			add_token_to_collection(head, create_lexer_token(">>",
+					REDIRECTION_APPEND));
 			i += 2;
 		}
 		else if (rd_history[i] == '<' && rd_history[i + 1] != '<')
 		{
-			add_token_to_collection(head, create_lexer_token("<", REDIRECTION_IN));
+			add_token_to_collection(head, create_lexer_token("<",
+					REDIRECTION_IN));
 			i++;
 		}
 		else if (rd_history[i] == '>' && rd_history[i + 1] != '>')
 		{
-			add_token_to_collection(head, create_lexer_token(">", REDIRECTION_OUT));
+			add_token_to_collection(head, create_lexer_token(">",
+					REDIRECTION_OUT));
 			i++;
 		}
 		else if (ft_strncmp(&rd_history[i], "<<", 2) == 0)
@@ -84,7 +88,11 @@ void tokenize_input(t_lexer **head, char *rd_history)
 		else
 		{
 			j = i;
-			while (rd_history[j] != '\0' && rd_history[j] != ' ' && rd_history[j] != '\t' && rd_history[j] != '|' && ft_strncmp(&rd_history[j], ">>", 2) != 0 && rd_history[j] != '<' && rd_history[j] != '>' && ft_strncmp(&rd_history[j], "<<", 2) != 0)
+			while (rd_history[j] != '\0' && rd_history[j] != ' '
+				&& rd_history[j] != '\t' && rd_history[j] != '|'
+				&& ft_strncmp(&rd_history[j], ">>", 2) != 0
+				&& rd_history[j] != '<' && rd_history[j] != '>'
+				&& ft_strncmp(&rd_history[j], "<<", 2) != 0)
 				j++;
 			if (j > i)
 			{
@@ -99,27 +107,27 @@ void tokenize_input(t_lexer **head, char *rd_history)
 	free(rd_history);
 }
 
-void print_tokens(t_lexer *head)
-{
-	t_lexer *current = head;
-	char *str;
+// void	print_tokens(t_lexer *head)
+// {
+// 	t_lexer *current = head;
+// 	char *str;
 
-	while (current)
-	{
-		if (current->token == WORD)
-			str = "WORD";
-		else if (current->token == PIPE)
-			str = "PIPE";
-		else if (current->token == REDIRECTION_APPEND)
-			str = "REDIRECTION_APPEND";
-		else if (current->token == REDIRECTION_IN)
-			str = "REDIRECTION_IN";
-		else if (current->token == REDIRECTION_OUT)
-			str = "REDIRECTION_OUT";
-		else if (current->token == HEREDOC)
-			str = "HEREDOC";
+// 	while (current)
+// 	{
+// 		if (current->token == WORD)
+// 			str = "WORD";
+// 		else if (current->token == PIPE)
+// 			str = "PIPE";
+// 		else if (current->token == REDIRECTION_APPEND)
+// 			str = "REDIRECTION_APPEND";
+// 		else if (current->token == REDIRECTION_IN)
+// 			str = "REDIRECTION_IN";
+// 		else if (current->token == REDIRECTION_OUT)
+// 			str = "REDIRECTION_OUT";
+// 		else if (current->token == HEREDOC)
+// 			str = "HEREDOC";
 
-		printf("Token: %s, Type: %s\n", current->str, str);
-		current = current->next;
-	}
-}
+// 		printf("Token: %s, Type: %s\n", current->str, str);
+// 		current = current->next;
+// 	}
+// }

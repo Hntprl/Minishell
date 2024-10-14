@@ -17,8 +17,6 @@ t_list	*ft_lstnew(char *content)
 	t_list	*node;
 	char	*var;
 
-	// int		i;
-	// i = 0;
 	var = ft_strdup(content);
 	node = (t_list *)malloc(sizeof(t_list));
 	if (node == NULL)
@@ -82,21 +80,4 @@ int	ft_parsersize(t_parser *lst)
 		i++;
 	}
 	return (i);
-}
-
-char **ft_list_to_str(t_list *env)
-{
-	int i;
-	char **envp;
-
-	i = 0;
-	envp = malloc(sizeof(char *) * (ft_lstsize(env) + 1));
-	while (env)
-	{
-		envp[i] = env->data;
-		i++;
-		env = env->next;
-	}
-	envp[i] = NULL;
-	return (envp);
 }

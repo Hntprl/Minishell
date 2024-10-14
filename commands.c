@@ -16,13 +16,14 @@
 void	ft_pwd_command(void)
 {
 	char	buf[4096];
+
 	printf("%s\n", getcwd(buf, 4096));
 }
 
-char *ft_find_env_value(char *var_name, char **env, int *is_invalid)
+char	*ft_find_env_value(char *var_name, char **env, int *is_invalid)
 {
-	char *var;
-	int i;
+	char	*var;
+	int		i;
 
 	i = 0;
 	if (var_name[0] != '$')
@@ -34,7 +35,7 @@ char *ft_find_env_value(char *var_name, char **env, int *is_invalid)
 		if (!ft_memcmp(var_name, var, ft_strlen(var)))
 			return ((free(var), ft_strchr(env[i], '=') + 1));
 		free(var);
-		i ++;
+		i++;
 	}
 	return ((*is_invalid) = 1, "1");
 }

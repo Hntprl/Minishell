@@ -20,7 +20,7 @@ void	commandcheck(char **envp, char *cmd2)
 		cmd2 = cmd2 + 1;
 		write(2, cmd2, ft_strlen(cmd2));
 		write(2, ": command not found\n", 20);
-		return;
+		return ;
 	}
 }
 
@@ -65,9 +65,9 @@ char	*ft_checkaccess(char **env, char *cmd)
 	return (NULL);
 }
 
-t_list *mini_env(void)
+t_list	*mini_env(void)
 {
-	t_list *lst;
+	t_list	*lst;
 	char	buf[4096];
 	char	*tmp;
 

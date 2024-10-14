@@ -12,6 +12,23 @@
 
 #include "minishell.h"
 
+char	**ft_list_to_str(t_list *env)
+{
+	int		i;
+	char	**envp;
+
+	i = 0;
+	envp = malloc(sizeof(char *) * (ft_lstsize(env) + 1));
+	while (env)
+	{
+		envp[i] = env->data;
+		i++;
+		env = env->next;
+	}
+	envp[i] = NULL;
+	return (envp);
+}
+
 void	ft_lstdelone(t_list *lst)
 {
 	if (lst)

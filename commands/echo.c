@@ -3,21 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarouf <amarouf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ochemsi <ochemsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 00:57:53 by amarouf           #+#    #+#             */
-/*   Updated: 2024/08/26 15:37:15 by amarouf          ###   ########.fr       */
+/*   Updated: 2024/10/14 00:59:40 by ochemsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int ft_getpid(void)
+int	ft_getpid(void)
 {
-	int fd;
-	char buffer[256];
-	ssize_t bytes_read;
-	int pid;
+	int		fd;
+	char	buffer[256];
+	ssize_t	bytes_read;
+	int		pid;
+	char	*ptr;
 
 	fd = open("/proc/self/stat", O_RDONLY);
 	if (fd == -1)
@@ -27,23 +28,24 @@ int ft_getpid(void)
 		(close(fd), exit(1));
 	buffer[bytes_read] = '\0';
 	close(fd);
-	char *ptr = buffer;
+	ptr = buffer;
 	while (*ptr != ' ' && *ptr != '\0')
 		ptr++;
 	return (pid = ft_atoi(buffer));
 }
 
-int echo_print_variables(char *command, int i, char **env)
+int	echo_print_variables(char *command, int i, char **env)
 {
 	int		is_invalid;
 	char	*var_name;
-	char	*var_value = NULL;
+	char	*var_value;
 	int		name_end;
 
+	var_value = NULL;
 	is_invalid = 0;
 	name_end = i + 1;
 	while (command[name_end] != '$' && command[name_end] != '\0')
-		name_end ++;
+		name_end++;
 	var_name = ft_substr(command, i, (name_end - i));
 	var_value = ft_find_env_value(var_name, env, &is_invalid);
 	if (var_value == NULL)
@@ -59,21 +61,21 @@ int echo_print_variables(char *command, int i, char **env)
 	return (i = name_end);
 }
 
-int is_n(char *str)
+int	is_n(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!str || !str[0])
 		return (0);
 	if (str[0] == '-' && str[1] == 'n')
 	{
-		i ++;
+		i++;
 		while (str[i])
 		{
 			if (str[i] != 'n')
 				return (0);
-			i ++;
+			i++;
 		}
 	}
 	else
@@ -91,19 +93,18 @@ int	print_variables(char **command, int j, int i, char **env)
 			i += 2;
 		}
 		if (command[j][i] == '$' && command[j][i + 1] == '\0')
-			(printf("$"), i ++);
+			(printf("$"), i++);
 		else
 			i = echo_print_variables(command[j], i, env);
 	}
 	return (i);
 }
 
-
 void	ft_echo_command(char **command, char **env)
 {
-	int		i;
-	int		j;
-	int		flag;
+	int	i;
+	int	j;
+	int	flag;
 
 	flag = 0;
 	j = 1;
@@ -113,7 +114,7 @@ void	ft_echo_command(char **command, char **env)
 	{
 		i = 0;
 		if (!command[j] || (flag && !command[2]))
-			return free(env);
+			return (free(env));
 		while (command[j][i])
 		{
 			if (command[j][i] == '$')
@@ -122,12 +123,12 @@ void	ft_echo_command(char **command, char **env)
 			{
 				if (!is_n(command[j]))
 					printf("%c", command[j][i]);
-				i ++;
+				i++;
 			}
 		}
 		if (command[j + 1] && !is_n(command[j]))
 			printf(" ");
-		j ++;
+		j++;
 	}
 	if (!flag)
 		printf("\n");
