@@ -6,7 +6,7 @@
 /*   By: ochemsi <ochemsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 13:44:22 by ochemsi           #+#    #+#             */
-/*   Updated: 2024/10/13 19:19:37 by ochemsi          ###   ########.fr       */
+/*   Updated: 2024/10/14 01:11:47 by ochemsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,45 +80,54 @@ void	add_file_red(t_parser **parser, t_tokens type, char *filename)
 		tmp->next = red;
 	}
 }
-
 // Function to fill the parser from the lexer
-void	fill_parser(t_lexer *lexer, t_parser **parser)
-{
-	t_lexer		*current;
-	t_parser	*current_parser;
-	int			command_count;
+// void	fill_parser(t_lexer *lexer, t_parser **parser)
+// {
+// 	t_lexer		*current;
+// 	t_parser	*current_parser;
+// 	int			command_count;
 
-	if (!lexer)
-		return ;
-	if (!*parser)
-		*parser = create_parser_node();
-	current = lexer;
-	current_parser = *parser;
-	while (current)
-	{
-		if (current->token == PIPE)
-		{
-			current_parser->next = create_parser_node();
-			current_parser = current_parser->next;
-		}
-		else if (current->token == WORD)
-		{
-			if (current->prev && (current->prev->token == REDIRECTION_IN
-					|| current->prev->token == REDIRECTION_OUT
-					|| current->prev->token == REDIRECTION_APPEND
-					|| current->prev->token == HEREDOC))
-			{
-				add_file_red(&current_parser, current->prev->token,
-					current->str);
-			}
-			else
-			{
-				command_count = count_commands(current);
-				add_command(&current_parser, current->str, command_count);
-			}
-		}
-		current = current->next;
-	}
+// 	if (!lexer)
+// 		return ;
+// 	if (!*parser)
+// 		*parser = create_parser_node();
+// 	current = lexer;
+// 	current_parser = *parser;
+// 	while (current)
+// 	{
+// 		if (current->token == PIPE)
+// 		{
+// 			current_parser->next = create_parser_node();
+// 			current_parser = current_parser->next;
+// 		}
+// 		else if (current->token == WORD)
+// 		{
+// 			if (current->prev && (current->prev->token == REDIRECTION_IN
+// 					|| current->prev->token == REDIRECTION_OUT
+// 					|| current->prev->token == REDIRECTION_APPEND
+// 					|| current->prev->token == HEREDOC))
+// 			{
+// 				add_file_red(&current_parser, current->prev->token,
+// 					current->str);
+// 			}
+// 			else
+// 			{
+// 				command_count = count_commands(current);
+// 				add_command(&current_parser, current->str, command_count);
+// 			}
+// 		}
+// 		current = current->next;
+// 	}
+// }
+
+void fill_parser(t_lexer *lexer, t_parser **parser)
+{
+    if (!lexer)
+        return;
+    if (!*parser)
+        *parser = create_parser_node();
+
+    process_tokens_parser(lexer, parser);
 }
 
 // void	print_parcer(t_parser *parser)
