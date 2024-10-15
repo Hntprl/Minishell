@@ -33,7 +33,6 @@
 # define BR "\033[106m"
 # define BG "\033[40m"
 # define BLACK "\033[30m"
-
 //////////////////////////////////////////////////////////////////////
 
 // Structs
@@ -154,6 +153,7 @@ void					ft_last_command(t_parser *parser, t_list **ls_env,
 int						ft_strncmp(const char *s1, const char *s2, size_t n);
 // libft_funcs.c
 int						ft_atoi(char *str);
+int						ft_expander(char *var_name, char **env);
 
 // lexer.c
 void					add_token_to_collection(t_lexer **head,

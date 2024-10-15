@@ -32,10 +32,31 @@ char	*ft_find_env_value(char *var_name, char **env, int *is_invalid)
 	while (env[i])
 	{
 		var = ft_substr(env[i], 0, ft_super_strlen(env[i], '='));
-		if (!ft_memcmp(var_name, var, ft_strlen(var)))
+		if (!ft_strcmp(var_name, var))
 			return ((free(var), ft_strchr(env[i], '=') + 1));
 		free(var);
 		i++;
 	}
 	return ((*is_invalid) = 1, "1");
+}
+
+int	ft_expander(char *var_name, char **env)
+{
+	char	*var;
+	int		i;
+
+	i = 0;
+	if (!var_name[1])
+		return (printf("%s\n", "$: command not found"));
+	var_name = (var_name + 1);
+	while (env[i])
+	{
+		var = ft_substr(env[i], 0, ft_super_strlen(env[i], '='));
+		if (!ft_strcmp(var_name, var))
+			return ((free(var), printf("%s: No such file or directory\n"
+						, ft_strchr(env[i], '=') + 1)));
+		free(var);
+		i++;
+	}
+	return (1);
 }
