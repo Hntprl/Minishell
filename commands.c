@@ -53,10 +53,12 @@ int	ft_expander(char *var_name, char **env)
 	{
 		var = ft_substr(env[i], 0, ft_super_strlen(env[i], '='));
 		if (!ft_strcmp(var_name, var))
-			return ((free(var), printf("%s: No such file or directory\n"
+			return ((free(env), free(var)
+					, printf("%s: No such file or directory\n"
 						, ft_strchr(env[i], '=') + 1)));
 		free(var);
 		i++;
 	}
+	free(env);
 	return (1);
 }
