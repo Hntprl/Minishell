@@ -12,6 +12,17 @@
 
 #include "minishell.h"
 
+
+// true bool == exit
+int	ft_status(int status, bool init)
+{
+	static int _exit;
+
+	if (init)
+		_exit = status;
+	return (_exit);
+}
+
 int	ft_getpid(void)
 {
 	int		fd;
@@ -74,8 +85,9 @@ void	minishell(t_list *ls_env)
 		rd_history = readline(prompt);
 	}
 	write(1, "exit\n", 5);
-	// rl_clear_history();
-	ft_lstclear(&ls_env);
+	rl_clear_history();
+	// ft_lstclear(&ls_env);
+	ft_malloc(0, 'f', false);
 	exit(0);
 }
 

@@ -17,14 +17,14 @@ int	ft_redirection(t_file_red *red, int fd)
 	if (red->typeoffile == REDIRECTION_OUT
 		|| red->typeoffile == REDIRECTION_APPEND)
 	{
-		dup2(fd, 1);
-		close(fd);
+		if (dup2(fd, 1) == -1 || close(fd) == -1)
+			(ft_malloc(0, 'f', false), exit(1));
 		return (1);
 	}
 	else if (red->typeoffile == REDIRECTION_IN)
 	{
-		dup2(fd, 0);
-		close(fd);
+		if (dup2(fd, 0) == -1 || close(fd) == -1)
+			(ft_malloc(0, 'f', false), exit(1));
 		return (0);
 	}
 	return (-99);

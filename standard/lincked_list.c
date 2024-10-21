@@ -17,8 +17,8 @@ t_list	*ft_lstnew(char *content)
 	t_list	*node;
 	char	*var;
 
-	var = ft_strdup(content);
-	node = (t_list *)malloc(sizeof(t_list));
+	var = ft_strrdup(content);
+	node = (t_list *)ft_malloc(sizeof(t_list), 'a', false);
 	if (node == NULL)
 		return (NULL);
 	node->data = var;

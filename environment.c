@@ -20,7 +20,7 @@ void	commandcheck(char **envp, char *cmd2)
 		cmd2 = cmd2 + 1;
 		write(2, cmd2, ft_strlen(cmd2));
 		write(2, ": command not found\n", 20);
-		return ;
+		exit(127);
 	}
 }
 
@@ -49,12 +49,14 @@ char	*ft_checkaccess(char **env, char *cmd)
 	i = 0;
 	allpaths = ft_split(ft_findpath(env), ':');
 	if (allpaths == NULL)
-		exit(EXIT_FAILURE);
+		exit(127);
 	while (allpaths[i] != NULL)
 	{
 		path = ft_strjoin(allpaths[i], cmd);
 		if (access(path, F_OK) == 0)
 		{
+			if (access(path, X_OK) != 0)
+				return (free(path), free_strings(allpaths), NULL);
 			path = ft_strdup(allpaths[i]);
 			return (free_strings(allpaths), path);
 		}

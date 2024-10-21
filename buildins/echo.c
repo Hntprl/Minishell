@@ -70,7 +70,12 @@ int	print_variables(char **command, int j, int i, char **env)
 			printf("%d", ft_getpid());
 			i += 2;
 		}
-		if (command[j][i] == '$' && command[j][i + 1] == '\0')
+		if (command[j][i + 1] && command[j][i] == '$' && command[j][i + 1] == '?')
+		{
+			printf("%d", ft_status(0, false));
+			i += 2;
+		}
+		else if (command[j][i] == '$' && command[j][i + 1] == '\0')
 			(printf("$"), i++);
 		else
 			i = echo_print_variables(command[j], i, env);
@@ -99,6 +104,7 @@ void	ft_echo_command(char **command, char **env)
 
 	flag = 0;
 	j = 1;
+	ft_status(0, true);
 	if (is_n(command[j]))
 		flag = 1;
 	while (command[j])

@@ -35,6 +35,14 @@
 # define BLACK "\033[30m"
 //////////////////////////////////////////////////////////////////////
 
+typedef struct s_garbage
+{
+	void	*data;
+	bool	is_free;
+	struct s_garbage *next;
+}			t_garbage;
+
+
 // Structs
 typedef enum e_tokens
 {
@@ -93,6 +101,7 @@ typedef struct s_cmd
 int						ft_memcmp(const void *s1, const void *s2, size_t n);
 char					**ft_split(char const *s, char c);
 char					*ft_strdup(const char *s1);
+char					*ft_strrdup(const char *s1);
 char					*ft_strjoin(char const *s1, char const *s2);
 size_t					ft_strlen(const char *s);
 char					*ft_strnstr(const char *haystack, const char *needle,
@@ -106,6 +115,7 @@ void					close_fd(int fd[2]);
 int						ft_isalpha(int c);
 size_t					ft_super_strlen(const char *s, char c);
 int						ft_strcmp(const char *s1, const char *s2);
+void					*ft_malloc(size_t size, char alloc, bool is_free);
 /* Lincked-list*/
 t_list					*ft_lstnew(char *ontent);
 char					**ft_list_to_str(t_list *env);
@@ -126,6 +136,7 @@ void					ft_env_command(t_list *env);
 void					ft_export_command(char **split, t_list **env);
 void					ft_unset_command(char *split, t_list **env);
 int						ft_buildins(t_parser *parser, t_list **ls_env);
+void					ft_dup_close(int std_out, int std_in);
 // Environment
 void					commandcheck(char **envp, char *cmd2);
 char					*ft_findpath(char **env);
@@ -133,6 +144,7 @@ char					*ft_checkaccess(char **env, char *cmd);
 t_list					*fill_envp(char **env);
 char					*ft_find_env_value(char *var_name, char **env,
 							int *is_invalid);
+int						ft_status(int status, bool valid);
 // Shell-build
 void					shell_commands(char **split, t_list *env);
 void					minishell(t_list *ls_env);

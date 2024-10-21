@@ -78,3 +78,19 @@ char	*ft_strrchr(const char *s, int c)
 	}
 	return (0);
 }
+
+char	*ft_strrdup(const char *s1)
+{
+	size_t	i;
+	char	*p;
+
+	i = 0;
+	p = (char *)ft_malloc(sizeof(char) * ft_strlen(s1) + 1, 'a', false);
+	while (s1[i] != '\0')
+	{
+		p[i] = s1[i];
+		i++;
+	}
+	p[i] = '\0';
+	return (p);
+}

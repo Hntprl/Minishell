@@ -68,6 +68,6 @@ void	free_strings(char **strings)
 
 void	close_fd(int fd[2])
 {
-	close(fd[0]);
-	close(fd[1]);
+	if (close(fd[0]) == -1 || close(fd[1]) == -1)
+		(ft_malloc(0, 'f', false), exit(1));
 }
